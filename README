@@ -1,0 +1,10 @@
+Project to simulate genetic and macroevolutionary algorithms
+============================================================
+
+To run properly this program, you need :
+	python+2.7
+	python-scitools
+	python-matplotlib
+	wxPython
+
+
