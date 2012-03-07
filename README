@@ -1,6 +1,12 @@
 Project to simulate genetic and macroevolutionary algorithms
 ============================================================
 
+<<<<<<< HEAD
+Platform to simulate algorithms to maximize/minimize functions using AI techniques.
+
+
+=======
+>>>>>>> refs/remotes/origin/master
 To run properly this program, you need :
 	python+2.7
 	python-scitools
