@@ -1,5 +1,7 @@
 '''
-Author : Armand Gutierrez Arumi
+Created on Mar 7, 2012
+
+@author: Armand Gutierrez Arumi
 
 
         Macroevolve is an application to try different algorithms to maximize(minimize) 
@@ -20,10 +22,15 @@ import pylab as p
 import time as t
 import math as m
 import time
+
 from threading import *
 import thread
 from algorithms.random_alg import Population_random, Random_alg,\
     Random_alg_params
+
+import wx
+from wxPython.wx import *
+
 
 def functionXY(x,y):
     '''
@@ -49,7 +56,15 @@ class Point(object):
     
     def __repr__(self):
         return("({0},{1})".format(self.x,self.y))
-    
+
+# Quit this
+glb_alg_choice = 0;
+
+glb_algorithms = {}
+glb_algorithms[0] = "Pseudo ME"
+glb_algorithms[1] = "Genetic Algorithm"
+glb_algorithms[2] = "Random"
+
 
 import wx
 class GraphicPlot(wx.Panel):
@@ -77,13 +92,9 @@ class GraphicPlot(wx.Panel):
         # The algorithm is the kind of population
         params = Random_alg_params(self.__number_population)
         self.__fitness_alg = Random_alg(params)
-        
-        print "TAM population {0}".format(self.__fitness_alg.get_size_population())
-        
+      
         # Distributes the population among the map 
         self.init_population()
-    
-        print "TAM population {0} dsp init".format(self.__fitness_alg.get_size_population())
         
     
     def init_population(self):
@@ -139,13 +150,6 @@ class GraphicPlot(wx.Panel):
         '''One step more, apply the algorithm'''
         self.draw_base_plot()
         
-        '''
-        for p in range(10):
-            print("{} ".format(p))
-            x = int(random.rand()*4)
-            y = int(random.rand()*7)
-            self.axes.plot(x,y,'wo',ms=5)
-        '''
         self.__fitness_alg.update_population()
         
         # Plot each individual
@@ -202,6 +206,7 @@ class CronoThread(Thread):
         # Method for use by main thread to signal an abort
         self._want_abort = 1
     
+    
 class MainFrame(wx.Frame):
     '''
     MainFrame of the application (the controls and the window).
@@ -209,11 +214,11 @@ class MainFrame(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(800,600))
 
-        self.sp = wx.SplitterWindow(self)
-        self.p1 = wx.Panel(self.sp, style=wx.SUNKEN_BORDER)
-
-        self.gp = GraphicPlot(self.sp)
-        self.sp.SplitVertically(self.p1, self.gp, 100)
+        # Add the main widget
+        self.add_widgetPanel()
+        
+        # In construction ...
+        #self.add_widgetMenu()
         
         # Status bar
         self.statusbar = self.CreateStatusBar()
@@ -226,15 +231,164 @@ class MainFrame(wx.Frame):
         EVT_RESULT(self,self.on_result_event)
         self.crono_worker = None
         
-        # Button
-        self.runButton = wx.Button(self.p1, -1, "run", size=(50,30), pos=(10,10))
+        # Add the control
+        self.add_control_panel()
+        
+    def add_widgetPanel(self):
+        '''
+        It adds the main control and graph zone
+        '''
+        self.sp = wx.SplitterWindow(self)
+        self.p1 = wx.Panel(self.sp, style=wx.SUNKEN_BORDER)
+
+        self.gp = GraphicPlot(self.sp)
+        self.sp.SplitVertically(self.p1, self.gp, 170)
+
+    def add_control_panel(self):
+
+        # Buttons
+        self.runButton = wx.Button(self.p1, -1, "run", size=(55,30), pos=(10,10))
         self.runButton.Bind(wx.EVT_BUTTON, self.run_event)
         
-        self.stepButton = wx.Button(self.p1, -1, "step", size=(50,30), pos=(10,40))
+        self.stepButton = wx.Button(self.p1, -1, "step", size=(55,30), pos=(10,40))
         self.stepButton.Bind(wx.EVT_BUTTON, self.step_event)
         
-        self.pauseButton = wx.Button(self.p1, -1, "pause", size=(50,30), pos=(10,70))
+        self.pauseButton = wx.Button(self.p1, -1, "pause", size=(55,30), pos=(10,70))
         self.pauseButton.Bind(wx.EVT_BUTTON, self.pause_event)
+
+        # List of algorithms
+        list_algorithms = glb_algorithms.values()
+        self.comboAlg = wx.ComboBox(self.p1, -1, value=(list_algorithms[0]), size=(120,30), pos=(10,130), choices=list_algorithms, style=wx.TE_PROCESS_ENTER)
+        self.comboAlg.SetToolTip(wx.ToolTip("select algorithm to test"))
+
+
+        self.comboAlg.Bind(wx.EVT_COMBOBOX, self.update_choice_alg)
+
+
+        # Population selector (by now fixed... then i change this
+        #self.size_populus
+
+        # Create the static text widget and set the text
+        self.add_population_widget( 10,170 )
+        
+
+    def add_population_widget(self, pos_x, pos_y):
+        
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        self.text = wxStaticText(self, label="Enter some text:")
+        sizer.Add(self.text, proportion=0,  border=5)
+        sizer.AddSpacer(2) 
+        # or sizer.Add((0,0))
+        self.edit = wxTextCtrl(self, size=wx.Size(70, -1))
+        sizer.Add(self.edit, proportion=0,  border=5)
+
+        """
+        # Horizontal sizer
+        self.h_sizer = wxBoxSizer(wx.HORIZONTAL)
+        #, pos=(pos_x, pos_y)
+        # Create the static text widget and set the text
+        self.text = wxStaticText(self, label="Enter some text:")
+        #Create the Edit Field (or TextCtrl)
+        self.edit = wxTextCtrl(self, size=wx.Size(70, -1))
+        #self.size_populus_wdg = wxTextCtrl(self, -1,"10",size=(120, 30), pos=position)
+        
+        #Add to horizontal sizer
+        #add the static text to the sizer, tell it not to resize
+        self.h_sizer.Add(self.text, 0,)
+        #Add 5 pixels between the static text and the edit
+        self.h_sizer.AddSpacer((5,0))
+        #Add Edit
+        self.h_sizer.Add(self.edit, 1)
+        
+        #Set the sizer
+        self.SetSizer(self.h_sizer)
+        """
+
+    def update_choice_alg(self, event):
+        # By now global variable, fix this
+        alg = event.GetSelection()
+        #
+
+    def add_widgetMenu(self):
+        # Creating the menubar.
+        
+        # Id does not work.. 
+        """
+        menuBar = wxMenuBar()
+        menuBar.Append(self.get_menu_file(),"&File") # Adding the "filemenu" to the MenuBar
+        #menuBar.Append(self.get_menu_config(),"&Settings")
+        #menuBar.Append(self.get_menu_run(),"&Run") 
+        self.SetMenuBar(menuBar)  # Adding the MenuBar to the Frame content.
+        """
+        
+        """
+        menu = wxMenu()
+        menu.Append(wx.ID_ABOUT, "&About", "More information about this program")
+        menu.AppendSeparator()
+        menu.Append(wx.ID_EXIT, "E&xit", "Terminate the program")
+        menuBar = wxMenuBar()
+        menuBar.Append(menu, "&File");
+        self.SetMenuBar(menuBar)
+        """
+        
+        
+    def get_menu_file(self):
+        # Setting up the menu.
+        filemenu= wxMenu()
+        
+        # wx.ID_ABOUT and wx.ID_EXIT are standard ids provided by wxWidgets.
+        menuAbout = filemenu.Append(wx.ID_ABOUT, "&About"," Information about this program")
+        menuExit = filemenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program")
+    
+        """
+        menu = wxMenu()
+        menu.Append(ID_ABOUT, "&About", "More information about this program")
+        menu.AppendSeparator()
+        menu.Append(ID_EXIT, "E&xit", "Terminate the program")
+        menuBar = wxMenuBar()
+        menuBar.Append(menu, "&File");
+        """
+
+        # Set events.
+        self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
+        self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
+        
+        return filemenu
+
+
+    def get_menu_config(self):
+        # Setting up the menu.
+        filemenu= wx.Menu()
+         
+        # wx.ID_ABOUT and wx.ID_EXIT are standard ids provided by wxWidgets.
+        menuAbout = filemenu.Append(wx.ID_ABOUT, "&Config","Configurating the program")
+    
+        # Set events.
+        #self.Bind(wx.EVT_MENU, self.OnChangeDepth, menuAbout)
+        
+        return filemenu
+
+    def get_menu_run(self):
+        # Setting up the menu.
+        filemenu= wx.Menu()
+        return filemenu
+
+
+    def OnAbout(self,e):
+        """
+        Macroevolutionary algorithm
+        """
+        msg = """
+Simple plataform to simulate methods to minimize algorithms.\n
+Some of implemented algorithms:\n    macroevolutionary algorithm."
+        """
+        dlg = wx.MessageDialog( self, msg,"About", wx.OK)
+        dlg.ShowModal() # Show it
+        dlg.Destroy() # finally destroy it when finished.
+     
+    def OnExit(self,e):
+        self.Close(True)  # Close the frame.
+
         
     def run_event(self,event):
         #self.statusbar.setStatusText("Running")
@@ -279,6 +433,29 @@ class MainFrame(wx.Frame):
             t=t+1
             yield t
 
+'''
+(The MIT License)
+
+Copyright (c) 2012 Armand Gutierrez Arumi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the 'Software'), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
 if __name__ == "__main__":
     	
     app = wx.App(redirect=False)
