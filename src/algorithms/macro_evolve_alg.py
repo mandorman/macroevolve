@@ -13,7 +13,6 @@ class Population_pseMA(Population):
     def __init__(self, param):
         super(Population_pseMA, self).__init__(size=param)
 
-
         
 class MA_alg(Fitness_algorithm):
     '''
@@ -88,29 +87,32 @@ class MA_alg(Fitness_algorithm):
         '''
         
         # Pseudo Macro Evolutionary algorithm
-        
         #avg_fitness = sum([ ind.get_fitness() for ind in self.get_individuals() ])/self.get_size_population()
-        
         #ind.set_fitness( self.get_population().calculate_fitness(ind.x, ind.y) )
         
         # This depends of it maximize or minimize the function!
         avg_fitness = 0
-        min_fitness = 999999999 # Not that this value should be opposite if minimize!!!
+        #best_fitness = None # Not that this value should be opposite if minimize!!!
+        best_ind = None
+        best_fitness = None
         
-        x_best, y_best = -1, -1
         for ind in self.get_individuals():
-            if (ind.get_fitness() > min_fitness):
-                min_fitness = ind.get_fitness()
-                x_best = ind.get_x()
-                y_best = ind.get_y()
+            if self.__is_better_fitness(best_fitness, ind.get_fitness()):
+                best_ind = ind
+                best_fitness = ind.get_fitness()
             avg_fitness = avg_fitness + ind.get_fitness()
-            
+        
+        x_best = best_ind.get_x()
+        y_best = best_ind.get_y()
         avg_fitness = avg_fitness/self.get_size_population()
-        print "average fitness : {0}".format(avg_fitness)
+        
+        #print "average fitness : {0} and individual {1} ".format(avg_fitness, best_ind)
+    
         # For all individuals that are less than the average
         for ind in self.get_individuals():
             # Minimize the fitness ...  encapsulate this!
-            if (ind.get_fitness() > avg_fitness):
+            #if (ind.get_fitness() > avg_fitness):
+            if not self.__is_better_fitness(avg_fitness, ind.get_fitness()):
                 # Calculates new position near best 
                 x,y = self.__calculate_pos_in_radius(self.__radius_param, x_best, y_best)
                 ind.set_x(x)
@@ -134,7 +136,9 @@ class MA_alg(Fitness_algorithm):
     def __get_terrain(self):
         return self.get_population().get_terrain()
     
-    population = property(get_population, set_population, None, "population's docstring")
+    def __is_better_fitness(self, fit_ref, fit_new):
+        return self.__get_terrain().is_better_fitness(fit_ref, fit_new)
     
+    population = property(get_population, set_population, None, "population's docstring")
     
     
