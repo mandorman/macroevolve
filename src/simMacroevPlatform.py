@@ -1,14 +1,12 @@
-"""
+'''
 Author : Armand Gutierrez Arumi
 
          Maximize/Minimize a given function using genetic o macroevolutionary algorithms.
-"""
+'''
 from numpy import *
 from numpy.random import uniform, seed
-
 #matplotlib.use('GTKAgg') # This must be done before importing pylab
 import matplotlib
-
 from matplotlib.mlab import griddata
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
@@ -19,19 +17,21 @@ import math as m
 import time
 from threading import *
 import thread
+from algorithms.random_alg import Population_random, Random_alg,\
+    Random_alg_params
 
 def functionXY(x,y):
-    """
+    '''
     Some nice base function.
-    """
+    '''
     #return x**2+y**2
     dist = math.sqrt((x*x)+(y*y))
     return ( dist+math.sin(2*dist)  )/( 100+dist)
 
 class Point(object):
-    """
+    '''
     Base point
-    """
+    '''
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -51,10 +51,10 @@ class GraphicPlot(wx.Panel):
     def __init__(self,parent):
         wx.Panel.__init__(self, parent,-1)
         
-        """
+        '''
         Base map contains the region to plot.
         By default an XY plane between (-10,-10) and (10,10)
-        """
+        '''
         self.upper_limit=10
         self.lower_limit=-10
         self.npts = 500
@@ -63,8 +63,35 @@ class GraphicPlot(wx.Panel):
         # Add Countor graph
         self.new_countour()
         
-    def new_countour(self):
+        '''
+        Base parameters (from GUI).
+        '''  
+        # N of people      
+        self.__number_population = 3
         
+        # The algorithm is the kind of population
+        params = Random_alg_params(self.__number_population)
+        self.__fitness_alg = Random_alg(params)
+        
+        print "TAM population {0}".format(self.__fitness_alg.get_size_population())
+        
+        # Distributes the population among the map 
+        self.init_population()
+    
+        print "TAM population {0} dsp init".format(self.__fitness_alg.get_size_population())
+        
+    
+    def init_population(self):
+        '''
+        Initializes a certain population (with his kind)
+        '''
+        self.__fitness_alg.new_population()
+        
+        
+    def new_countour(self):
+        '''
+        It draws a new map and also inits new population
+        '''
         # Once every time..
         self.xi = linspace(self.lower_limit-0.1, self.upper_limit+0.1, self.npts)
         self.yi = linspace(self.lower_limit-0.1, self.upper_limit+0.1, self.npts)
@@ -80,6 +107,9 @@ class GraphicPlot(wx.Panel):
             self.z.append(functionXY(self.x[index],self.y[index]))             
     
         self.zgrid = griddata(self.x,self.y,self.z,self.xi,self.yi)
+        
+        # Distributes the population among the map 
+        #self.init_population()
         
         self.draw_base_plot()
         
@@ -100,56 +130,46 @@ class GraphicPlot(wx.Panel):
         self.points = []
 
     def do_step(self):
-        """One step more"""
         
+        '''One step more, apply the algorithm'''
         self.draw_base_plot()
         
+        '''
         for p in range(10):
             print("{} ".format(p))
             x = int(random.rand()*4)
             y = int(random.rand()*7)
             self.axes.plot(x,y,'wo',ms=5)
-    
+        '''
+        self.__fitness_alg.update_population()
+        
+        # Plot each individual
+        for indy in self.__fitness_alg.get_individuals():
+            self.axes.plot(indy.x,indy.y,'wo',ms=5)
+            
+        
         self.figure.canvas.draw()
 
-         
-    def draw(self):
-        
-        for i in range(10):
-            t.sleep(3)
-            self.clear()
-            # Add some individuals
-        
-            numberInd = 10
-            for i in range(numberInd):
-                #x =(self.lower_limit,self.upper_limit,1)
-                #y = uniform(self.lower_limit,self.upper_limit,1)
-                point = Point(4,2)
-                #print(point)
-                print("{0},{1}".format(point.x, point.y))
-                self.axes.plot(point.x,point.y,'wo',ms=5)
-            #self.axes.draw()
-            #self.axes.show()
-
+       
 # Define notification event for thread completion
 EVT_RESULT_ID = wx.NewId()
 
 def EVT_RESULT(win, func):
-    """Define Result Event."""
+    '''Define Result Event.'''
     win.Connect(-1, -1, EVT_RESULT_ID, func)
 
 class ResultEvent(wx.PyEvent):
-    """Simple event to carry arbitrary result data."""
+    '''Simple event to carry arbitrary result data.'''
     def __init__(self, data):
-        """Init Result Event."""
+        '''Init Result Event.'''
         wx.PyEvent.__init__(self)
         self.SetEventType(EVT_RESULT_ID)
         self.data = data
         
 class CronoThread(Thread):
-    """Crono engine that calculates the ticks in simulation."""
+    '''Crono engine that calculates the ticks in simulation.'''
     def __init__(self, notify_window, foo_gen_ticks):
-        """Init Worker Thread Class."""
+        '''Init Worker Thread Class.'''
         Thread.__init__(self)
         self._notify_window = notify_window
         self._want_abort = 0
@@ -162,7 +182,7 @@ class CronoThread(Thread):
         self.start()
 
     def run(self):
-        """Run Crono Thread."""
+        '''Run Crono Thread.'''
         self._want_abort = False
         for one_step_more in self.gen_ticks():
             print "step!"
@@ -173,14 +193,14 @@ class CronoThread(Thread):
                 return
        
     def abort(self):
-        """abort crono thread."""
+        '''abort crono thread.'''
         # Method for use by main thread to signal an abort
         self._want_abort = 1
     
 class MainFrame(wx.Frame):
-    """
+    '''
     MainFrame of the application (the controls and the window).
-    """
+    '''
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(800,600))
 
@@ -218,13 +238,6 @@ class MainFrame(wx.Frame):
             self.crono_worker = CronoThread(self, self.ticks)
             #thread.start_new_thread(self.go_ticks,())
     
-    def go_ticks(self):
-        """
-        for one_step_more in self.ticks():
-            print "step!"
-            self.gp.do_step()
-        """
-    
     def step_event(self,sevent):
         self.gp.do_step()
         self.crono_worker = None
@@ -237,7 +250,7 @@ class MainFrame(wx.Frame):
             self.crono_worker = None
             
     def on_result_event(self, event):
-        """Trick to show result status, otherwise it crashes."""
+        '''Trick to show result status, otherwise it crashes.'''
         if event.data is True:
             self.gp.do_step()
         else:
@@ -247,9 +260,9 @@ class MainFrame(wx.Frame):
 
 
     def ticks(self):
-        """
+        '''
         Hommade function to control the maximum number of ticks
-        """
+        '''
         t = 0
         while t < 100000:
             if (self.pause):
