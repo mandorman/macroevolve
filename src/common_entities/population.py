@@ -22,6 +22,7 @@ class Individual(object):
         '''
         self.__x = 0
         self.__y = 0
+        self.__z = 0
         self.__fitness = 0
                 
         pass
@@ -33,10 +34,11 @@ class Individual(object):
     def get_y(self):
         return self.__y
 
+    
 
     def get_fitness(self):
         '''
-        Fitness function that gives the territorium
+        Fitness is in fact, the z component ... (but the individual does not know it..)
         '''
         return self.__fitness
 
@@ -48,14 +50,14 @@ class Individual(object):
     def set_y(self, value):
         self.__y = value
 
-
+    
     def set_fitness(self, value):
         self.__fitness = value
 
     
     x = property(get_x, set_x, None, "x's docstring")
     y = property(get_y, set_y, None, "y's docstring")
-    fitness = property(get_fitness, set_fitness, None, "fitness's docstring")
+    #fitness = property(get_fitness, set_fitness, None, "fitness's docstring")
     
 
 class Terrain(object):
@@ -70,6 +72,9 @@ class Terrain(object):
         self.__upper_limit = upper_limit
         self.__lower_limit = lower_limit
         self.__function = landscape_function
+
+    def calculate_fitness(self, x, y):
+        return self.__function(x,y)
 
     def get_function(self):
         return self.__function
@@ -111,6 +116,12 @@ class Population(object):
         self.__map = terrain
         self.__people = []
 
+    def calculate_fitness(self,x,y):
+        '''
+        The population evaluates the fitness of a given position (from map)
+        '''
+        return self.__map.calculate_fitness(x,y)
+
     def new_population(self):
         '''
         By default it sparse the individuals among the map (zone).
@@ -120,19 +131,20 @@ class Population(object):
         
         # Init
         self.__people = []
-        
+        print "population - new population"
+        f_fitness = self.__map.get_function()
         # Sparse individuals randomly for the terrain
         for i in range(self.__size):
             x = random.uniform(dlimit, ulimit)
             y = random.uniform(dlimit, ulimit)
-            z = self.__map.get_function()
             
             individual = self.__individualClass()
             individual.set_x(x)
             individual.set_y(y)
-            individual.set_fitness(z)
+            individual.set_fitness(f_fitness(x,y))
             
             self.__people.append(individual)
+            print "population - one more appended"
 
     def next_generation(self):
         '''
@@ -164,8 +176,30 @@ class Population(object):
     def set_size(self, value):
         self.__size = value
 
+    def get_terrain(self):
+        return self.__map
 
     individualClass = property(get_individual_class, set_individual_class, "individualClass's docstring")
     size = property(get_size, set_size, "size's docstring")
         
 
+
+class Common_alg_params(object):
+    '''
+    Class to encapsulate all the params
+    '''
+    def __init__(self, population):
+        self.__population = population
+
+    def get_size_population(self):
+        return self.__population
+
+
+    def set_size_population(self, value):
+        self.__population = value
+
+    def get_terrain(self):
+        return self.__population.get_terrain()
+
+    population = property(get_size_population, set_size_population, None, "population's size")
+    

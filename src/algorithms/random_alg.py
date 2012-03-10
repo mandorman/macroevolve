@@ -33,23 +33,6 @@ class Population_random(Population):
         '''
         super(Population_random, self).new_population()
 
-class Random_alg_params(object):
-    '''
-    Class to encapsulate all the params
-    '''
-    def __init__(self, population):
-        self.__population = population
-
-    def get_size_population(self):
-        return self.__population
-
-
-    def set_size_population(self, value):
-        self.__population = value
-
-    population = property(get_size_population, set_size_population, None, "population's size")
-    
-
 class Random_alg(Fitness_algorithm):
     '''
     Implementation of random algorithm

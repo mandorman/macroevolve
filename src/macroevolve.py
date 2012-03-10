@@ -25,11 +25,13 @@ import time
 
 from threading import *
 import thread
-from algorithms.random_alg import Population_random, Random_alg,\
-    Random_alg_params
 
 import wx
 from wxPython.wx import *
+from algorithms.genetic_alg import GA_alg
+from algorithms.macro_evolve_alg import MA_alg
+from common_entities.population import Common_alg_params
+from algorithms.random_alg import Random_alg
 
 
 def functionXY(x,y):
@@ -58,13 +60,21 @@ class Point(object):
         return("({0},{1})".format(self.x,self.y))
 
 # Quit this
-glb_alg_choice = 0;
+glb_alg_choice = 0;  #"Random"; # Random
+
+glb_key_pseudoME = "Pseudo ME"
+glb_key_ga = "Genetic Algorithm"
+glb_key_random = "Random"
 
 glb_algorithms = {}
-glb_algorithms[0] = "Pseudo ME"
-glb_algorithms[1] = "Genetic Algorithm"
-glb_algorithms[2] = "Random"
+glb_algorithms[0] = glb_key_random 
+glb_algorithms[1] = glb_key_pseudoME
+glb_algorithms[2] = glb_key_ga
 
+glb_alg_class = {}
+glb_alg_class[glb_algorithms[0]] = Random_alg
+glb_alg_class[glb_algorithms[1]] =  MA_alg
+glb_alg_class[glb_algorithms[2]] = GA_alg
 
 import wx
 class GraphicPlot(wx.Panel):
@@ -86,16 +96,42 @@ class GraphicPlot(wx.Panel):
         '''
         Base parameters (from GUI).
         '''  
-        # N of people      
-        self.__number_population = 3
+        self.update_choice()
         
-        # The algorithm is the kind of population
-        params = Random_alg_params(self.__number_population)
-        self.__fitness_alg = Random_alg(params)
-      
         # Distributes the population among the map 
         self.init_population()
         
+    def update_choice(self):
+        # N of people      
+        self.__number_population = 5
+        
+        glb_alg_choice = 1 # ??
+        print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
+        # The algorithm is the kind of population
+        
+        if (glb_alg_choice == 0 ): 
+            # Random
+            print("Chosed Random algorithm")
+            params = Common_alg_params(self.__number_population)
+            self.__fitness_alg = Random_alg(params)
+            
+        elif (glb_alg_choice == 1) :
+            # Pseudo ME
+            print("Chosed Macroevolutionary algorithm")
+            params = Common_alg_params(self.__number_population)
+            self.__fitness_alg = MA_alg(params)
+            
+            
+        elif (glb_alg_choice == 2):
+            # Genetic Algorithm
+            print("Chosed Genetic algorithm")
+            params = Common_alg_params(self.__number_population)
+            self.__fitness_alg = Random_alg(params)
+            
+        self.init_population()
+            
+        print("The choice is : {0}".format(glb_alg_choice))
+            
     
     def init_population(self):
         '''
@@ -152,6 +188,7 @@ class GraphicPlot(wx.Panel):
         
         self.__fitness_alg.update_population()
         
+        print("{0} individuals to draw !".format(len(self.__fitness_alg.get_individuals())))
         # Plot each individual
         for indy in self.__fitness_alg.get_individuals():
             self.axes.plot(indy.x,indy.y,'wo',ms=5)
@@ -192,6 +229,7 @@ class CronoThread(Thread):
 
     def run(self):
         '''Run Crono Thread.'''
+        
         self._want_abort = False
         for one_step_more in self.gen_ticks():
             print "step!"
@@ -269,7 +307,8 @@ class MainFrame(wx.Frame):
         #self.size_populus
 
         # Create the static text widget and set the text
-        self.add_population_widget( 10,170 )
+        self.size_pop_wdg = wxTextCtrl(self, 1, "10", size=wx.Size(70, -1), pos=(10,170))
+        #self.add_population_widget( 10,170 )
         
 
     def add_population_widget(self, pos_x, pos_y):
@@ -306,8 +345,9 @@ class MainFrame(wx.Frame):
 
     def update_choice_alg(self, event):
         # By now global variable, fix this
-        alg = event.GetSelection()
-        #
+        glb_alg_choice = event.GetSelection()
+        print "update_choice_alg {0} and selection {1}".format(glb_alg_choice, event.GetSelection())
+     
 
     def add_widgetMenu(self):
         # Creating the menubar.
@@ -393,6 +433,10 @@ Some of implemented algorithms:\n    macroevolutionary algorithm."
     def run_event(self,event):
         #self.statusbar.setStatusText("Running")
         print("Running...")
+        
+        # Update choice
+        self.gp.update_choice()
+        
         if not self.crono_worker:
             self.crono_worker = CronoThread(self, self.ticks)
             #thread.start_new_thread(self.go_ticks,())
