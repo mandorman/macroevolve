@@ -1,7 +1,12 @@
 '''
 Author : Armand Gutierrez Arumi
 
-         Maximize/Minimize a given function using genetic o macroevolutionary algorithms.
+
+        Macroevolve is an application to try different algorithms to maximize(minimize) 
+        a given function.
+        
+        Maximize(Minimize) a given function using genetic o macroevolutionary algorithms.
+
 '''
 from numpy import *
 from numpy.random import uniform, seed
@@ -240,6 +245,8 @@ class MainFrame(wx.Frame):
     
     def step_event(self,sevent):
         self.gp.do_step()
+        if self.crono_worker != None:
+            self.crono_worker.abort()
         self.crono_worker = None
         
     def pause_event(self,event):
