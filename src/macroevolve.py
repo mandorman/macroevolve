@@ -105,7 +105,7 @@ class GraphicPlot(wx.Panel):
         # N of people      
         self.__number_population = 5
         
-        glb_alg_choice = 1 # ??
+        #glb_alg_choice = 1 # ??
         print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
         # The algorithm is the kind of population
         
