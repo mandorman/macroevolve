@@ -46,3 +46,24 @@ class Fitness_algorithm(object):
         '''
         # The random algorithm never converges :P
         return False
+    
+    
+
+class Common_alg_params(object):
+    '''
+    Class to encapsulate all the params
+    '''
+    def __init__(self, population):
+        self.__population = population
+
+    def get_size_population(self):
+        return self.__population
+
+
+    def set_size_population(self, value):
+        self.__population = value
+
+    def get_terrain(self):
+        return self.__population.get_terrain()
+
+    population = property(get_size_population, set_size_population, None, "population's size")

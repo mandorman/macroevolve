@@ -11,6 +11,7 @@ objects the proper methods.
 '''
 
 import random
+from common_entities.terrain import Terrain
 
 class Individual(object):
     '''
@@ -59,70 +60,6 @@ class Individual(object):
     y = property(get_y, set_y, None, "y's docstring")
     #fitness = property(get_fitness, set_fitness, None, "fitness's docstring")
     
-
-class Terrain(object):
-    
-    foo = lambda x,y : x**2+y**2
-    def __init__(self, upper_limit=10, lower_limit=-10, landscape_function=foo, minimize=True):
-        '''
-        It is the territorium, so it contains restrictions propers of it 
-        and also a fitness function (it infere to each individual its fitness).
-        
-        '''
-        self.__upper_limit = upper_limit
-        self.__lower_limit = lower_limit
-        self.__function = landscape_function
-        self.__minimize = minimize
-
-    def calculate_fitness(self, x, y):
-        return self.__function(x,y)
-
-    def get_function(self):
-        return self.__function
-
-    def set_function(self, value):
-        self.__function = value
-
-    def get_upper_limit(self):
-        return self.__upper_limit
-
-
-    def get_lower_limit(self):
-        return self.__lower_limit
-
-
-    def set_upper_limit(self, value):
-        self.__upper_limit = value
-
-
-    def set_lower_limit(self, value):
-        self.__lower_limit = value
-            
-
-    upper_limit = property(get_upper_limit, set_upper_limit, None, "upper_limit's of map")
-    lower_limit = property(get_lower_limit, set_lower_limit, None, "lower_limit's of map")
-    function = property(get_function, set_function, None, "function to minimize")
-    
-    def is_better_fitness(self, fit_ref, fit_new):
-        '''
-        Depending if we are maximizing(minimize)
-        -move to population- 
-        '''
-        # If there is no ref, yes at all
-        if fit_ref == None:
-            return True
-        
-        # Otherwise depends if we are maximizing or minizing
-        res = False
-        
-        if self.__minimize:
-            if (fit_ref > fit_new ):
-                return True
-        else:
-            if (fit_ref < fit_new ):
-                return True
-            
-        return res
 
 territorium = Terrain()
 class Population(object):
@@ -204,23 +141,4 @@ class Population(object):
     size = property(get_size, set_size, "size's docstring")
         
 
-
-class Common_alg_params(object):
-    '''
-    Class to encapsulate all the params
-    '''
-    def __init__(self, population):
-        self.__population = population
-
-    def get_size_population(self):
-        return self.__population
-
-
-    def set_size_population(self, value):
-        self.__population = value
-
-    def get_terrain(self):
-        return self.__population.get_terrain()
-
-    population = property(get_size_population, set_size_population, None, "population's size")
     

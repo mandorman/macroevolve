@@ -4,6 +4,7 @@ Created on Mar 9, 2012
 @author: armand
 '''
 from common_entities.fitness_algorithm import Fitness_algorithm
+from algorithms.random_alg import Population_random
 
 
 class GA_alg(Fitness_algorithm):

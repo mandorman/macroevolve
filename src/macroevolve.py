@@ -30,7 +30,7 @@ import wx
 from wxPython.wx import *
 from algorithms.genetic_alg import GA_alg
 from algorithms.macro_evolve_alg import MA_alg
-from common_entities.population import Common_alg_params
+from common_entities.fitness_algorithm import Common_alg_params
 from algorithms.random_alg import Random_alg
 
 
@@ -105,7 +105,7 @@ class GraphicPlot(wx.Panel):
         # N of people      
         self.__number_population = 5
         
-        #glb_alg_choice = 1 # ??
+        glb_alg_choice = 1 # ??
         print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
         # The algorithm is the kind of population
         
