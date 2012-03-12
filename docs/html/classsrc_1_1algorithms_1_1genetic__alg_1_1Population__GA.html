@@ -80,11 +80,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a1cccababdfce60e00e94e22c610148c0">__init__</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a8c86a85bf8ef8cb21e38ce471acca6ff">new_population</a></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#abb96e126611c8b98a26bad8f4dfb2b00">update_population</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a4715286c22f805102db1d11d37252f75">next_generation</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a6bc2cdc4c2ae68df504ec3ef3a24a48b">get_new_generation</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#adb33181bb3b46e1679df78669613d3ba">mutate_population</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#ad857b29aef47f4d7f4a876c4c53acad7">mutate_individual</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a8c5e9ef3be020d639f0864e5a075e07a">crossover_population</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a44c9c7690772ea28648705efb658a2d9">scaled_fitness</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a21755c162ec0e7a06e9323e0698e2867">max_fitness</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA.html#a303f3f2c571137a7013e459aab5e18bb">min_fitness</a></td></tr>
@@ -141,6 +141,27 @@ Population genetic algorithm requires new attributes
 Computes the average fitness of the population.
 It computes the aritmetic mean of the fitness of the individuals in the population
 It may be overriden by descendants.
+</pre></div> 
+</div>
+</div>
+<a class="anchor" id="a8c5e9ef3be020d639f0864e5a075e07a"></a><!-- doxytag: member="src::algorithms::genetic_alg::Population_GA::crossover_population" ref="a8c5e9ef3be020d639f0864e5a075e07a" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def src::algorithms::genetic_alg::Population_GA::crossover_population </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<div class="fragment"><pre class="fragment">
+Randomly choose 'X' individuals from the population (according to the corresponding argument).
+Selection allows repetition of individuals. Selection is performed according to probability
+to reproduce from each individual according to its fitness.
 </pre></div> 
 </div>
 </div>
@@ -271,12 +292,12 @@ argument
 </pre></div> 
 </div>
 </div>
-<a class="anchor" id="a8c86a85bf8ef8cb21e38ce471acca6ff"></a><!-- doxytag: member="src::algorithms::genetic_alg::Population_GA::new_population" ref="a8c86a85bf8ef8cb21e38ce471acca6ff" args="" -->
+<a class="anchor" id="a4715286c22f805102db1d11d37252f75"></a><!-- doxytag: member="src::algorithms::genetic_alg::Population_GA::next_generation" ref="a4715286c22f805102db1d11d37252f75" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def src::algorithms::genetic_alg::Population_GA::new_population </td>
+          <td class="memname">def src::algorithms::genetic_alg::Population_GA::next_generation </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em></td><td>)</td>
@@ -286,7 +307,7 @@ argument
 </div>
 <div class="memdoc">
 <div class="fragment"><pre class="fragment">
-It creates a new population
+Creates new population
 </pre></div> 
 </div>
 </div>
@@ -298,8 +319,18 @@ It creates a new population
           <td class="memname">def src::algorithms::genetic_alg::Population_GA::scaled_fitness </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>isMinimization</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
@@ -340,25 +371,6 @@ It may be overriden by descendants.
 </pre></div> 
 </div>
 </div>
-<a class="anchor" id="abb96e126611c8b98a26bad8f4dfb2b00"></a><!-- doxytag: member="src::algorithms::genetic_alg::Population_GA::update_population" ref="abb96e126611c8b98a26bad8f4dfb2b00" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">def src::algorithms::genetic_alg::Population_GA::update_population </td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>self</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-<div class="fragment"><pre class="fragment">
-Creates new population
-</pre></div> 
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/algorithms/genetic_alg.py</li>
 </ul>
@@ -377,7 +389,7 @@ Creates new population
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Mon Mar 12 2012 19:44:45 for macroevolve by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 13 2012 00:13:23 for macroevolve by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

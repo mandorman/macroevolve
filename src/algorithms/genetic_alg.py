@@ -113,7 +113,7 @@ class Population_GA(Population):
         people_list = self.get_individuals()
         mut_prob = self.__param.get_probability_of_mutation()
         number_of_individuals_to_mutate=int(mut_prob*len(people_list))
-        print "Mutate some individuals! proB: {0}".format(number_of_individuals_to_mutate)
+        #print "Mutate some individuals! proB: {0}".format(number_of_individuals_to_mutate)
         for i in range(0,number_of_individuals_to_mutate):
             r_num = random.randint(0,len(people_list)-1)
             self.mutate_individual(people_list[r_num])

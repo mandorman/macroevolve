@@ -11,15 +11,15 @@ Inherits Population.
 \item 
 def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a1cccababdfce60e00e94e22c610148c0}{\_\-\_\-init\_\-\_\-}
 \item 
-def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8c86a85bf8ef8cb21e38ce471acca6ff}{new\_\-population}
-\item 
-def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_abb96e126611c8b98a26bad8f4dfb2b00}{update\_\-population}
+def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a4715286c22f805102db1d11d37252f75}{next\_\-generation}
 \item 
 def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a6bc2cdc4c2ae68df504ec3ef3a24a48b}{get\_\-new\_\-generation}
 \item 
 def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_adb33181bb3b46e1679df78669613d3ba}{mutate\_\-population}
 \item 
 def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_ad857b29aef47f4d7f4a876c4c53acad7}{mutate\_\-individual}
+\item 
+def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8c5e9ef3be020d639f0864e5a075e07a}{crossover\_\-population}
 \item 
 def \hyperlink{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a44c9c7690772ea28648705efb658a2d9}{scaled\_\-fitness}
 \item 
@@ -65,6 +65,20 @@ Population genetic algorithm requires new attributes
 Computes the average fitness of the population.
 It computes the aritmetic mean of the fitness of the individuals in the population
 It may be overriden by descendants.
+\end{DoxyVerb}
+ \hypertarget{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8c5e9ef3be020d639f0864e5a075e07a}{
+\index{src::algorithms::genetic\_\-alg::Population\_\-GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}!crossover\_\-population@{crossover\_\-population}}
+\index{crossover\_\-population@{crossover\_\-population}!src::algorithms::genetic_alg::Population_GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}}
+\subsubsection[{crossover\_\-population}]{\setlength{\rightskip}{0pt plus 5cm}def src::algorithms::genetic\_\-alg::Population\_\-GA::crossover\_\-population (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8c5e9ef3be020d639f0864e5a075e07a}
+\begin{DoxyVerb}
+Randomly choose 'X' individuals from the population (according to the corresponding argument).
+Selection allows repetition of individuals. Selection is performed according to probability
+to reproduce from each individual according to its fitness.
 \end{DoxyVerb}
  \hypertarget{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8e7cafde9d8bcffb2b24dcc033a0f2a1}{
 \index{src::algorithms::genetic\_\-alg::Population\_\-GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}!fitness\_\-dispersion@{fitness\_\-dispersion}}
@@ -142,24 +156,25 @@ It must calculate the fitness for the new mutated individual.
 Randomly chooses the individuals to be mutated according to the corresponding
 argument
 \end{DoxyVerb}
- \hypertarget{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8c86a85bf8ef8cb21e38ce471acca6ff}{
-\index{src::algorithms::genetic\_\-alg::Population\_\-GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}!new\_\-population@{new\_\-population}}
-\index{new\_\-population@{new\_\-population}!src::algorithms::genetic_alg::Population_GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}}
-\subsubsection[{new\_\-population}]{\setlength{\rightskip}{0pt plus 5cm}def src::algorithms::genetic\_\-alg::Population\_\-GA::new\_\-population (
+ \hypertarget{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a4715286c22f805102db1d11d37252f75}{
+\index{src::algorithms::genetic\_\-alg::Population\_\-GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}!next\_\-generation@{next\_\-generation}}
+\index{next\_\-generation@{next\_\-generation}!src::algorithms::genetic_alg::Population_GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}}
+\subsubsection[{next\_\-generation}]{\setlength{\rightskip}{0pt plus 5cm}def src::algorithms::genetic\_\-alg::Population\_\-GA::next\_\-generation (
 \begin{DoxyParamCaption}
 \item[{}]{self}
 \end{DoxyParamCaption}
 )}}
-\label{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a8c86a85bf8ef8cb21e38ce471acca6ff}
+\label{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a4715286c22f805102db1d11d37252f75}
 \begin{DoxyVerb}
-It creates a new population
+Creates new population
 \end{DoxyVerb}
  \hypertarget{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a44c9c7690772ea28648705efb658a2d9}{
 \index{src::algorithms::genetic\_\-alg::Population\_\-GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}!scaled\_\-fitness@{scaled\_\-fitness}}
 \index{scaled\_\-fitness@{scaled\_\-fitness}!src::algorithms::genetic_alg::Population_GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}}
 \subsubsection[{scaled\_\-fitness}]{\setlength{\rightskip}{0pt plus 5cm}def src::algorithms::genetic\_\-alg::Population\_\-GA::scaled\_\-fitness (
 \begin{DoxyParamCaption}
-\item[{}]{self}
+\item[{}]{self, }
+\item[{}]{isMinimization}
 \end{DoxyParamCaption}
 )}}
 \label{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_a44c9c7690772ea28648705efb658a2d9}
@@ -180,18 +195,6 @@ to calculate its probability to reproduce
 \begin{DoxyVerb}
 Sorts the population by descending fitness.
 It may be overriden by descendants.
-\end{DoxyVerb}
- \hypertarget{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_abb96e126611c8b98a26bad8f4dfb2b00}{
-\index{src::algorithms::genetic\_\-alg::Population\_\-GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}!update\_\-population@{update\_\-population}}
-\index{update\_\-population@{update\_\-population}!src::algorithms::genetic_alg::Population_GA@{src::algorithms::genetic\_\-alg::Population\_\-GA}}
-\subsubsection[{update\_\-population}]{\setlength{\rightskip}{0pt plus 5cm}def src::algorithms::genetic\_\-alg::Population\_\-GA::update\_\-population (
-\begin{DoxyParamCaption}
-\item[{}]{self}
-\end{DoxyParamCaption}
-)}}
-\label{classsrc_1_1algorithms_1_1genetic__alg_1_1Population__GA_abb96e126611c8b98a26bad8f4dfb2b00}
-\begin{DoxyVerb}
-Creates new population
 \end{DoxyVerb}
  
 
