@@ -32,6 +32,7 @@ from algorithms.genetic_alg import GA_alg
 from algorithms.macro_evolve_alg import MA_alg
 from common_entities.fitness_algorithm import Common_alg_params
 from algorithms.random_alg import Random_alg
+import exceptions
 
 
 def functionXY(x,y):
@@ -59,7 +60,8 @@ class Point(object):
     def __repr__(self):
         return("({0},{1})".format(self.x,self.y))
 
-# Quit this
+# Quit this !!
+######### Select algorithm (better toy model)
 glb_alg_choice = 0;  #"Random"; # Random
 
 glb_key_pseudoME = "Pseudo ME"
@@ -75,6 +77,17 @@ glb_alg_class = {}
 glb_alg_class[glb_algorithms[0]] = Random_alg
 glb_alg_class[glb_algorithms[1]] =  MA_alg
 glb_alg_class[glb_algorithms[2]] = GA_alg
+
+######### Just some size population (better toy model)
+glb_num_population = 10
+
+glb_size_array = [i*5 for i in range(1,10)]
+glb_size_array.append(100)
+glb_size_array.append(250)
+glb_size_array.append(500)
+#glb_size_array.sort(cmp=None, key=None, reverse=True)
+tmp = [str(i) for i in glb_size_array ]
+glb_size_array = tmp
 
 import wx
 class GraphicPlot(wx.Panel):
@@ -103,9 +116,9 @@ class GraphicPlot(wx.Panel):
         
     def update_choice(self):
         # N of people      
-        self.__number_population = 5
+        self.__number_population = glb_num_population
         
-        glb_alg_choice = 1 # ??
+        # glb_alg_choice = 1 # ??
         print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
         # The algorithm is the kind of population
         
@@ -127,7 +140,9 @@ class GraphicPlot(wx.Panel):
             print("Chosed Genetic algorithm")
             params = Common_alg_params(self.__number_population)
             self.__fitness_alg = Random_alg(params)
-            
+        
+        # Pause worker and re-start
+        
         self.init_population()
             
         print("The choice is : {0}".format(glb_alg_choice))
@@ -244,10 +259,23 @@ class CronoThread(Thread):
         # Method for use by main thread to signal an abort
         self._want_abort = 1
     
-    
+def parse_2_int_range (s):
+    try:
+        r = int(s)
+        if r < 0:
+            r = 10
+        elif r > 1000:
+            r = 1000
+        return r
+    except exceptions.ValueError:
+        return 10
+
+
 class MainFrame(wx.Frame):
     '''
     MainFrame of the application (the controls and the window).
+    
+    (New way to do widgets : play better with layers, factories, etc.)
     '''
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=(800,600))
@@ -298,18 +326,20 @@ class MainFrame(wx.Frame):
         list_algorithms = glb_algorithms.values()
         self.comboAlg = wx.ComboBox(self.p1, -1, value=(list_algorithms[0]), size=(120,30), pos=(10,130), choices=list_algorithms, style=wx.TE_PROCESS_ENTER)
         self.comboAlg.SetToolTip(wx.ToolTip("select algorithm to test"))
-
-
         self.comboAlg.Bind(wx.EVT_COMBOBOX, self.update_choice_alg)
 
-
-        # Population selector (by now fixed... then i change this
-        #self.size_populus
-
         # Create the static text widget and set the text
-        self.size_pop_wdg = wxTextCtrl(self, 1, "10", size=wx.Size(70, -1), pos=(10,170))
-        #self.add_population_widget( 10,170 )
+        #self.wdg_size_pop = wx.TextCtrl(self, 1, str(glb_num_population), size=wx.Size(70, -1), pos=(10,170))
+        self.wdg_size_pop = wx.ComboBox(self.p1, -1, value=(glb_size_array[1]), size=(70, -1), pos=(10,170), choices=glb_size_array, style=wx.TE_PROCESS_ENTER)
+        self.wdg_size_pop.Bind(wx.EVT_COMBOBOX, self.update_choice_alg)
         
+        # Bottom buttons
+        self.newMapButton = wx.Button(self.p1, -1, "New map", size=(120,30), pos=(10,210))
+        self.newMapButton.Bind(wx.EVT_BUTTON, self.new_map_event)
+
+        self.closeButton = wx.Button(self.p1, -1, "Close", size=(120,30), pos=(10,420))
+        self.closeButton.Bind(wx.EVT_BUTTON, self.event_exit )
+
 
     def add_population_widget(self, pos_x, pos_y):
         
@@ -345,7 +375,23 @@ class MainFrame(wx.Frame):
 
     def update_choice_alg(self, event):
         # By now global variable, fix this
-        glb_alg_choice = event.GetSelection()
+        
+        # First of all ...  
+        self.stop_chrono_worker()
+        
+        # Choice population
+        if (self.comboAlg.GetSelection() >= 0):
+            glb_alg_choice = self.comboAlg.GetSelection()
+        
+        # Choice size
+        strNum = self.wdg_size_pop.GetValue()
+        glb_num_population = int(strNum)
+        #glb_num_population = parse_2_int_range(strNum)
+        #self.wdg_size_pop.SetValue(str(glb_num_population))
+        
+        # Then ... Update the choice (restart!?)
+        self.gp.update_choice() 
+        
         print "update_choice_alg {0} and selection {1}".format(glb_alg_choice, event.GetSelection())
      
 
@@ -361,17 +407,6 @@ class MainFrame(wx.Frame):
         self.SetMenuBar(menuBar)  # Adding the MenuBar to the Frame content.
         """
         
-        """
-        menu = wxMenu()
-        menu.Append(wx.ID_ABOUT, "&About", "More information about this program")
-        menu.AppendSeparator()
-        menu.Append(wx.ID_EXIT, "E&xit", "Terminate the program")
-        menuBar = wxMenuBar()
-        menuBar.Append(menu, "&File");
-        self.SetMenuBar(menuBar)
-        """
-        
-        
     def get_menu_file(self):
         # Setting up the menu.
         filemenu= wxMenu()
@@ -379,19 +414,10 @@ class MainFrame(wx.Frame):
         # wx.ID_ABOUT and wx.ID_EXIT are standard ids provided by wxWidgets.
         menuAbout = filemenu.Append(wx.ID_ABOUT, "&About"," Information about this program")
         menuExit = filemenu.Append(wx.ID_EXIT,"E&xit"," Terminate the program")
-    
-        """
-        menu = wxMenu()
-        menu.Append(ID_ABOUT, "&About", "More information about this program")
-        menu.AppendSeparator()
-        menu.Append(ID_EXIT, "E&xit", "Terminate the program")
-        menuBar = wxMenuBar()
-        menuBar.Append(menu, "&File");
-        """
 
         # Set events.
         self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
-        self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
+        self.Bind(wx.EVT_MENU, self.event_exit, menuExit)
         
         return filemenu
 
@@ -426,7 +452,7 @@ Some of implemented algorithms:\n    macroevolutionary algorithm."
         dlg.ShowModal() # Show it
         dlg.Destroy() # finally destroy it when finished.
      
-    def OnExit(self,e):
+    def event_exit(self,e):
         self.Close(True)  # Close the frame.
 
         
@@ -442,27 +468,41 @@ Some of implemented algorithms:\n    macroevolutionary algorithm."
             #thread.start_new_thread(self.go_ticks,())
     
     def step_event(self,sevent):
+        '''
+        Do one step in simulation (event)
+        '''
         self.gp.do_step()
         if self.crono_worker != None:
             self.crono_worker.abort()
         self.crono_worker = None
         
-    def pause_event(self,event):
-        #self.pause = True
-        print "pause! Is crono : {0}".format(self.crono_worker != None)
+
+    def stop_chrono_worker(self):
+        '''
+        It stops the chrono worker
+        '''
         if self.crono_worker != None:
             self.crono_worker.abort()
             self.crono_worker = None
+
+    def pause_event(self,event):
+        '''Event pause state of simulation'''
+        #self.pause = True
+        print "pause! Is crono : {0}".format(self.crono_worker != None)
+        self.stop_chrono_worker()
             
     def on_result_event(self, event):
         '''Trick to show result status, otherwise it crashes.'''
         if event.data is True:
             self.gp.do_step()
         else:
-            if self.crono_worker != None:
-                self.crono_worker.abort()
-                self.crono_worker = None
-
+            self.stop_chrono_worker()
+ 
+    def new_map_event(self):
+        '''
+        Creates a new map
+        '''
+        pass
 
     def ticks(self):
         '''

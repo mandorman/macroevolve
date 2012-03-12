@@ -66,6 +66,11 @@ class Population(object):
     
     def __init__(self, indyClass=Individual, size=10, terrain=territorium):
         '''
+        Population contains individuals in a certain map (terrain)
+        
+        Also it decides, the fitness of an individual (note that the individual
+        is completly asceptic of the quality of the fitness)
+        
         We could specify the number of individuals that we want.
         Of course, every type of individual could be specified
         '''
@@ -73,6 +78,8 @@ class Population(object):
         self.__size = size
         self.__map = terrain
         self.__people = []
+        
+        print(">>>>>>>>>> New population created .. size of populus : {0}".format(size))
 
     def calculate_fitness(self,x,y):
         '''
@@ -102,7 +109,6 @@ class Population(object):
             individual.set_fitness(f_fitness(x,y))
             
             self.__people.append(individual)
-            print "population - one more appended"
 
     def next_generation(self):
         '''
