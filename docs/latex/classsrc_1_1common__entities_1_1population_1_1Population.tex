@@ -1,0 +1,160 @@
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population}{
+\section{src::common\_\-entities::population::Population Class Reference}
+\label{classsrc_1_1common__entities_1_1population_1_1Population}\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classsrc_1_1common__entities_1_1population_1_1Population_a45848619386d083bcf94cf90ceab7b26}{\_\-\_\-init\_\-\_\-}
+\item 
+def \hyperlink{classsrc_1_1common__entities_1_1population_1_1Population_a6c08c1e222abd3d4218b3578271bf2a8}{calculate\_\-fitness}
+\item 
+def \hyperlink{classsrc_1_1common__entities_1_1population_1_1Population_a6ac8104359264ec73d194cf3b1cf98a2}{new\_\-population}
+\item 
+def \hyperlink{classsrc_1_1common__entities_1_1population_1_1Population_a4f65508ba16746e46d940918f8aa627c}{next\_\-generation}
+\item 
+def \hyperlink{classsrc_1_1common__entities_1_1population_1_1Population_a7fca4206fa8d9e3f29350a201f141424}{get\_\-individuals}
+\item 
+def \hyperlink{classsrc_1_1common__entities_1_1population_1_1Population_afb228d8168d2d77027c40d06284f2c82}{set\_\-individuals}
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a599d6c829921a5385c5a4ada5c287169}{
+def {\bfseries get\_\-individual\_\-class}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a599d6c829921a5385c5a4ada5c287169}
+
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_af46d759d83164c85088dc4a131115fc4}{
+def {\bfseries get\_\-size}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_af46d759d83164c85088dc4a131115fc4}
+
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a3a23341630c48d2ec1697e7f6e1bef6b}{
+def {\bfseries set\_\-individual\_\-class}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a3a23341630c48d2ec1697e7f6e1bef6b}
+
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_ac0c43ecc4c6af521d2b7ae9dd1027291}{
+def {\bfseries set\_\-size}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_ac0c43ecc4c6af521d2b7ae9dd1027291}
+
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a7a6cb671b4ca94e7a0b149ee39841a9a}{
+def {\bfseries get\_\-terrain}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a7a6cb671b4ca94e7a0b149ee39841a9a}
+
+\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a6533dd09af0f2ecd2c3768777b366154}{
+{\bfseries individualClass} = property(get\_\-individual\_\-class, set\_\-individual\_\-class, \char`\"{}individualClass's docstring\char`\"{})}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a6533dd09af0f2ecd2c3768777b366154}
+
+\item 
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_ab11e5bbeb3253dcf0e171ec8c0380e17}{
+{\bfseries size} = property(get\_\-size, set\_\-size, \char`\"{}size's docstring\char`\"{})}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_ab11e5bbeb3253dcf0e171ec8c0380e17}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}
+Base Population
+\end{DoxyVerb}
+ 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a45848619386d083bcf94cf90ceab7b26}{
+\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}!\_\-\_\-init\_\-\_\-@{\_\-\_\-init\_\-\_\-}}
+\index{\_\-\_\-init\_\-\_\-@{\_\-\_\-init\_\-\_\-}!src::common_entities::population::Population@{src::common\_\-entities::population::Population}}
+\subsubsection[{\_\-\_\-init\_\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}def src::common\_\-entities::population::Population::\_\-\_\-init\_\-\_\- (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{indyClass = {\ttfamily {\bf Individual}}, }
+\item[{}]{size = {\ttfamily 10}, }
+\item[{}]{terrain = {\ttfamily territorium}}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a45848619386d083bcf94cf90ceab7b26}
+\begin{DoxyVerb}
+Population contains individuals in a certain map (terrain)
+
+Also it decides, the fitness of an individual (note that the individual
+is completly asceptic of the quality of the fitness)
+
+We could specify the number of individuals that we want.
+Of course, every type of individual could be specified
+\end{DoxyVerb}
+ 
+
+\subsection{Member Function Documentation}
+\hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a6c08c1e222abd3d4218b3578271bf2a8}{
+\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}!calculate\_\-fitness@{calculate\_\-fitness}}
+\index{calculate\_\-fitness@{calculate\_\-fitness}!src::common_entities::population::Population@{src::common\_\-entities::population::Population}}
+\subsubsection[{calculate\_\-fitness}]{\setlength{\rightskip}{0pt plus 5cm}def src::common\_\-entities::population::Population::calculate\_\-fitness (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{x, }
+\item[{}]{y}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a6c08c1e222abd3d4218b3578271bf2a8}
+\begin{DoxyVerb}
+The population evaluates the fitness of a given position (from map)
+\end{DoxyVerb}
+ \hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a7fca4206fa8d9e3f29350a201f141424}{
+\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}!get\_\-individuals@{get\_\-individuals}}
+\index{get\_\-individuals@{get\_\-individuals}!src::common_entities::population::Population@{src::common\_\-entities::population::Population}}
+\subsubsection[{get\_\-individuals}]{\setlength{\rightskip}{0pt plus 5cm}def src::common\_\-entities::population::Population::get\_\-individuals (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a7fca4206fa8d9e3f29350a201f141424}
+\begin{DoxyVerb}
+Returns the individuals of the class
+\end{DoxyVerb}
+ \hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a6ac8104359264ec73d194cf3b1cf98a2}{
+\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}!new\_\-population@{new\_\-population}}
+\index{new\_\-population@{new\_\-population}!src::common_entities::population::Population@{src::common\_\-entities::population::Population}}
+\subsubsection[{new\_\-population}]{\setlength{\rightskip}{0pt plus 5cm}def src::common\_\-entities::population::Population::new\_\-population (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a6ac8104359264ec73d194cf3b1cf98a2}
+\begin{DoxyVerb}
+By default it sparse the individuals among the map (zone).
+\end{DoxyVerb}
+ \hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_a4f65508ba16746e46d940918f8aa627c}{
+\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}!next\_\-generation@{next\_\-generation}}
+\index{next\_\-generation@{next\_\-generation}!src::common_entities::population::Population@{src::common\_\-entities::population::Population}}
+\subsubsection[{next\_\-generation}]{\setlength{\rightskip}{0pt plus 5cm}def src::common\_\-entities::population::Population::next\_\-generation (
+\begin{DoxyParamCaption}
+\item[{}]{self}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_a4f65508ba16746e46d940918f8aa627c}
+\begin{DoxyVerb}
+Next step of the population
+
+(override)
+\end{DoxyVerb}
+ \hypertarget{classsrc_1_1common__entities_1_1population_1_1Population_afb228d8168d2d77027c40d06284f2c82}{
+\index{src::common\_\-entities::population::Population@{src::common\_\-entities::population::Population}!set\_\-individuals@{set\_\-individuals}}
+\index{set\_\-individuals@{set\_\-individuals}!src::common_entities::population::Population@{src::common\_\-entities::population::Population}}
+\subsubsection[{set\_\-individuals}]{\setlength{\rightskip}{0pt plus 5cm}def src::common\_\-entities::population::Population::set\_\-individuals (
+\begin{DoxyParamCaption}
+\item[{}]{self, }
+\item[{}]{new\_\-list}
+\end{DoxyParamCaption}
+)}}
+\label{classsrc_1_1common__entities_1_1population_1_1Population_afb228d8168d2d77027c40d06284f2c82}
+\begin{DoxyVerb}
+Returns the individuals of the class
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+src/common\_\-entities/population.py\end{DoxyCompactItemize}

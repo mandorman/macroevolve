@@ -66,11 +66,8 @@ class Population_GA(Population):
         
         # Functions that population must do 
         self.get_new_generation() # Do new resampling with best probabilities
-        #self.mutate_population() # Mutate some individuals
+        self.mutate_population() # Mutate some individuals
         #self.crossover_population()
-        
-        print ">>>>  ....... something happens after mutation? {0} ".format(len(self.get_individuals()))
-    
     
         """
         if self.elitism==True:
@@ -96,23 +93,17 @@ class Population_GA(Population):
 
         individuals_list = self.get_individuals()
         
-        print ">>>>  samplesize {0} i num individuals {1}".format(samplesize, len(individuals_list))
-
-        #print ">>>> prob to reproduce : {0} scaledfitness {1} samplesize {2} i num individuals".format(probability_to_reproduce, scaled_fitness_list, samplesize, len(individuals_list))
-
         for i in range(0,samplesize):
             random_number= random.uniform(0,1)
             for j in range(0,len(acum_sum)):
                 if acum_sum[j]> random_number:
                     break
             sample.append(individuals_list[j])
-        
-        
+
         
         self.set_individuals(sample)
         
-        print ">>>>  ....... and total population {0} ".format(len(self.get_individuals()))
-    
+
 
     def mutate_population(self):
         '''
@@ -120,10 +111,11 @@ class Population_GA(Population):
         argument
         '''
         people_list = self.get_individuals()
-        number_of_individuals_to_mutate=int(self.__param.probability_of_mutation*len(people_list))
-        
+        mut_prob = self.__param.get_probability_of_mutation()
+        number_of_individuals_to_mutate=int(mut_prob*len(people_list))
+        print "Mutate some individuals! proB: {0}".format(number_of_individuals_to_mutate)
         for i in range(0,number_of_individuals_to_mutate):
-            r_num = random.randint(0,len(self)-1)
+            r_num = random.randint(0,len(people_list)-1)
             self.mutate_individual(people_list[r_num])
             
     def mutate_individual(self, indy):
@@ -134,11 +126,15 @@ class Population_GA(Population):
         variation=random.uniform(0,0.05)
          
         indy.x+=variation
-        if indy.x > indy.upper_limit: indy.x = indy.lower_limit + (indy.x-indy.upper_limit)
-        if indy.x < indy.lower_limit: indy.x = indy.upper_limit + (indy.x -indy.lower_limit)
+        
+        lower_lim = self.get_terrain().get_lower_limit()
+        upper_lim = self.get_terrain().get_upper_limit()
+        
+        if indy.x > lower_lim: indy.x = lower_lim + (indy.x - upper_lim)
+        if indy.x < lower_lim: indy.x = upper_lim + (indy.x - lower_lim)
         indy.y += variation
-        if indy.y > indy.upper_limit: indy.y = indy.lower_limit + indy.y-indy.upper_limit
-        if indy.y < indy.lower_limit: indy.y = indy.upper_limit + (indy.y -indy.lower_limit)
+        if indy.y > upper_lim : indy.y = lower_lim + indy.y-indy.upper_limit
+        if indy.y < lower_lim: indy.y = indy.upper_limit + (indy.y - lower_lim)
         
         indy.set_fitness(self.calculate_fitness(indy.x, indy.y)) 
         return(indy)
@@ -231,6 +227,62 @@ class Params_GA(Common_alg_params):
         self.probability_of_crossover=0.85
         self.elitism=False
         self.convergence_coefficient=0.1    
+
+    def get_maxgenerations(self):
+        return self.__maxgenerations
+
+
+    def get_minimization(self):
+        return self.__minimization
+
+
+    def get_probability_of_mutation(self):
+        return self.__probability_of_mutation
+
+
+    def get_probability_of_crossover(self):
+        return self.__probability_of_crossover
+
+
+    def get_elitism(self):
+        return self.__elitism
+
+
+    def get_convergence_coefficient(self):
+        return self.__convergence_coefficient
+
+
+    def set_maxgenerations(self, value):
+        self.__maxgenerations = value
+
+
+    def set_minimization(self, value):
+        self.__minimization = value
+
+
+    def set_probability_of_mutation(self, value):
+        self.__probability_of_mutation = value
+
+
+    def set_probability_of_crossover(self, value):
+        self.__probability_of_crossover = value
+
+
+    def set_elitism(self, value):
+        self.__elitism = value
+
+
+    def set_convergence_coefficient(self, value):
+        self.__convergence_coefficient = value
+
+    maxgenerations = property(get_maxgenerations, set_maxgenerations, None, "maxgenerations's docstring")
+    minimization = property(get_minimization, set_minimization, None, "minimization's docstring")
+    probability_of_mutation = property(get_probability_of_mutation, set_probability_of_mutation, None, "probability_of_mutation's docstring")
+    probability_of_crossover = property(get_probability_of_crossover, set_probability_of_crossover, None, "probability_of_crossover's docstring")
+    elitism = property(get_elitism, set_elitism, None, "elitism's docstring")
+    convergence_coefficient = property(get_convergence_coefficient, set_convergence_coefficient, None, "convergence_coefficient's docstring")
+
+
 
 class GA_alg(Fitness_algorithm):
     '''
