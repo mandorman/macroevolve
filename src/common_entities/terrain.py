@@ -19,6 +19,14 @@ class Terrain(object):
         self.__function = landscape_function
         self.__minimize = minimize
 
+    def get_minimize(self):
+        return self.__minimize
+
+
+    def set_minimize(self, value):
+        self.__minimize = value
+
+
     def calculate_fitness(self, x, y):
         return self.__function(x,y)
 
@@ -68,3 +76,6 @@ class Terrain(object):
                 return True
             
         return res
+    is_minimize = property(get_minimize, set_minimize, None, "minimize's docstring")
+
+    

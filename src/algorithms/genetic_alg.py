@@ -54,27 +54,24 @@ class Population_GA(Population):
         '''
         Population genetic algorithm requires new attributes
         '''
-        super(Population_GA, self).__init__(size=param)
-
-
-    def new_population(self):
-        '''
-        It creates a new population
-        '''
-        print "ma_alg : new_population"
-        self.__population.new_population() 
+        print "Population GA poop {0}".format(param.get_size_population())
+        super(Population_GA, self).__init__(size=param.get_size_population())
         
-    def update_population(self):
+        self.__param = param 
+
+    def next_generation(self):
         """
         Creates new population
         """
         
         # Functions that population must do 
         self.get_new_generation() # Do new resampling with best probabilities
-        self.mutate_population() # Mutate some individuals
-
+        #self.mutate_population() # Mutate some individuals
         #self.crossover_population()
         
+        print ">>>>  ....... something happens after mutation? {0} ".format(len(self.get_individuals()))
+    
+    
         """
         if self.elitism==True:
             self.population.extend(elite)
@@ -86,25 +83,36 @@ class Population_GA(Population):
         Gets new generation
         '''
         samplesize = self.get_size()
-        scaled_fitness_list=self.scaled_fitness()
+        
+        scaled_fitness_list=self.scaled_fitness(self.get_terrain().is_minimize)
         
         if (sum(scaled_fitness_list))<0.00001: #to protect zero division
             probability_to_reproduce=[fit/(0.00001) for fit in scaled_fitness_list]
         else:
             probability_to_reproduce=[fit/sum(scaled_fitness_list) for fit in scaled_fitness_list]
-
+        
         acum_sum=[sum(probability_to_reproduce[0:i+1]) for i in range(0,len(probability_to_reproduce))]
         sample=[]
 
         individuals_list = self.get_individuals()
+        
+        print ">>>>  samplesize {0} i num individuals {1}".format(samplesize, len(individuals_list))
+
+        #print ">>>> prob to reproduce : {0} scaledfitness {1} samplesize {2} i num individuals".format(probability_to_reproduce, scaled_fitness_list, samplesize, len(individuals_list))
+
         for i in range(0,samplesize):
             random_number= random.uniform(0,1)
             for j in range(0,len(acum_sum)):
                 if acum_sum[j]> random_number:
                     break
             sample.append(individuals_list[j])
-            
+        
+        
+        
         self.set_individuals(sample)
+        
+        print ">>>>  ....... and total population {0} ".format(len(self.get_individuals()))
+    
 
     def mutate_population(self):
         '''
@@ -112,10 +120,10 @@ class Population_GA(Population):
         argument
         '''
         people_list = self.get_individuals()
-        number_of_individuals_to_mutate=int(self.probability_of_mutation*len(people_list))
+        number_of_individuals_to_mutate=int(self.__param.probability_of_mutation*len(people_list))
+        
         for i in range(0,number_of_individuals_to_mutate):
             r_num = random.randint(0,len(self)-1)
-            print "Mutate ind before : {0}".format(people_list[r_num])
             self.mutate_individual(people_list[r_num])
             
     def mutate_individual(self, indy):
@@ -136,7 +144,24 @@ class Population_GA(Population):
         return(indy)
 
     
-    def scaled_fitness(self):
+    
+    def crossover_population(self):
+        '''
+        Randomly choose 'X' individuals from the population (according to the corresponding argument).
+        Selection allows repetition of individuals. Selection is performed according to probability
+        to reproduce from each individual according to its fitness.
+        '''
+        number_of_pairs_to_crossover=int(self.__params.probability_of_crossover*len(self)/2)
+        for i in range(0,number_of_pairs_to_crossover):
+            ix_crossover1=random.randint(0,len(self)-1)
+            ix_crossover2=random.randint(0,len(self)-1)
+            ind_crossover1=self[ix_crossover1]
+            ind_crossover2=self[ix_crossover2]
+            crossovered_individuals=ind_crossover1.crossover(ind_crossover2)
+            self[ix_crossover1]=crossovered_individuals[0]
+            self[ix_crossover2]=crossovered_individuals[1]
+    
+    def scaled_fitness(self, isMinimization):
         '''
         Scales the fitness of each individual according to the population fitness
         to calculate its probability to reproduce
@@ -148,18 +173,16 @@ class Population_GA(Population):
        
         if (abs(minfitness-maxfitness)<0.00001): #to protect zero division
             #print "i"
-            scaled_fitness_values=[(individual.fitness-maxfitness)/(0.00001) for individual in self]
-        elif (self.minimization):
-                scaled_fitness_values=[math.fabs((individual.fitness-maxfitness)/(minfitness-maxfitness)) for individual in self]        
+            scaled_fitness_values=[(individual.fitness-maxfitness)/(0.00001) for individual in self.get_individuals()]
+            
+        elif (isMinimization):
+                scaled_fitness_values=[math.fabs((individual.fitness-maxfitness)/(minfitness-maxfitness)) for individual in self.get_individuals()]        
         else:
-                scaled_fitness_values=[(maxfitness-individual.fitness)/(maxfitness-minfitness) for individual in self]
+                scaled_fitness_values=[(maxfitness-individual.fitness)/(maxfitness-minfitness) for individual in self.get_individuals()]
         
         return scaled_fitness_values
-           
-           
-       
-
-
+        
+        
     def max_fitness(self):
         '''
         Return the maximum fitness value.
@@ -195,10 +218,12 @@ class Population_GA(Population):
         
 
 class Params_GA(Common_alg_params):
-    def __init__(self):
+    def __init__(self, population_size):
         '''
         The base parameters for genetic algorithms
         '''
+        super(Params_GA, self).__init__(population_size)
+        
         # Specific parameters
         self.maxgenerations=100
         self.minimization=True
@@ -218,10 +243,9 @@ class GA_alg(Fitness_algorithm):
         super(GA_alg, self).__init__()   
         
         # Specific params for this algorithm
-        self.__params = Params_GA(params)
+        self.__params = params
 
         self.__population = Population_GA(self.__params)
- 
                 
     def new_population(self):
         '''

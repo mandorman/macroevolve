@@ -69,7 +69,7 @@ glb_key_ga = "Genetic"
 glb_key_mixed = "Mixed"
 glb_key_random = "Random"
 
-glb_alg_choice = glb_key_random
+glb_alg_choice = glb_key_mixed
 
 glb_algorithms = {}
 glb_algorithms[glb_key_random] = glb_key_random 
@@ -146,7 +146,7 @@ class GraphicPlot(wx.Panel):
         elif (glb_alg_choice == glb_key_ga):
             # Genetic Algorithm
             print("Chosed Genetic algorithm")
-            params = Params_GA()
+            params = Params_GA(self.__number_population)
             params.set_size_population(self.__number_population)
             self.__fitness_alg = GA_alg(params)
             
@@ -217,11 +217,11 @@ class GraphicPlot(wx.Panel):
         
         self.__fitness_alg.update_population()
         
-        print("{0} individuals to draw !".format(len(self.__fitness_alg.get_individuals())))
+        #print("{0} individuals to draw !".format(len(self.__fitness_alg.get_individuals())))
         # Plot each individual
         for indy in self.__fitness_alg.get_individuals():
             self.axes.plot(indy.x,indy.y,'wo',ms=5)
-            
+            #print "pos ind {0},{1}".format(indy.x, indy.y)
         
         self.figure.canvas.draw()
 

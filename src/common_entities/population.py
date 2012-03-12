@@ -58,7 +58,7 @@ class Individual(object):
     
     x = property(get_x, set_x, None, "x's docstring")
     y = property(get_y, set_y, None, "y's docstring")
-    #fitness = property(get_fitness, set_fitness, None, "fitness's docstring")
+    fitness = property(get_fitness, set_fitness, None, "fitness's docstring")
     
 
 territorium = Terrain()
