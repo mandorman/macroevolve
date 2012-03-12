@@ -63,7 +63,9 @@ class Individual(object):
 
 territorium = Terrain()
 class Population(object):
-    
+    '''
+    Base Population
+    '''
     def __init__(self, indyClass=Individual, size=10, terrain=territorium):
         '''
         Population contains individuals in a certain map (terrain)

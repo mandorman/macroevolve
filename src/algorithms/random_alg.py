@@ -18,6 +18,8 @@ class Population_random(Population):
         super(Population_random, self).__init__(size=size_populus)
     
         #self.__size = size
+        print(">>>>>>>>>> (Population Random ) .. size of populus : {0}".format(size_populus))
+
     
     def new_population(self):
         '''

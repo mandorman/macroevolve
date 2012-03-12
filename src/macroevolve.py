@@ -62,21 +62,22 @@ class Point(object):
 
 # Quit this !!
 ######### Select algorithm (better toy model)
-glb_alg_choice = 0;  #"Random"; # Random
 
 glb_key_pseudoME = "Pseudo ME"
 glb_key_ga = "Genetic Algorithm"
 glb_key_random = "Random"
 
+glb_alg_choice = glb_key_random
+
 glb_algorithms = {}
-glb_algorithms[0] = glb_key_random 
-glb_algorithms[1] = glb_key_pseudoME
-glb_algorithms[2] = glb_key_ga
+glb_algorithms[glb_key_random] = glb_key_random 
+glb_algorithms[glb_key_pseudoME] = glb_key_pseudoME
+glb_algorithms[glb_key_ga] = glb_key_ga
 
 glb_alg_class = {}
-glb_alg_class[glb_algorithms[0]] = Random_alg
-glb_alg_class[glb_algorithms[1]] =  MA_alg
-glb_alg_class[glb_algorithms[2]] = GA_alg
+glb_alg_class[glb_key_random] = Random_alg
+glb_alg_class[glb_key_pseudoME] =  MA_alg
+glb_alg_class[glb_key_ga] = GA_alg
 
 ######### Just some size population (better toy model)
 glb_num_population = 10
@@ -115,34 +116,37 @@ class GraphicPlot(wx.Panel):
         self.init_population()
         
     def update_choice(self):
+        # Yep, quit this ones! :P
+        global glb_num_population
+        global glb_alg_choice
+        
         # N of people      
-        self.__number_population = glb_num_population
+        self.__number_population = glb_num_population 
         
         # glb_alg_choice = 1 # ??
         print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
         # The algorithm is the kind of population
         
-        if (glb_alg_choice == 0 ): 
+        if (glb_alg_choice == glb_key_random ): 
             # Random
             print("Chosed Random algorithm")
             params = Common_alg_params(self.__number_population)
             self.__fitness_alg = Random_alg(params)
             
-        elif (glb_alg_choice == 1) :
+        elif (glb_alg_choice == glb_key_pseudoME) :
             # Pseudo ME
-            print("Chosed Macroevolutionary algorithm")
+            print("Chosed pseudoMacroevolutionary algorithm")
             params = Common_alg_params(self.__number_population)
             self.__fitness_alg = MA_alg(params)
             
             
-        elif (glb_alg_choice == 2):
+        elif (glb_alg_choice == glb_key_ga):
             # Genetic Algorithm
             print("Chosed Genetic algorithm")
             params = Common_alg_params(self.__number_population)
             self.__fitness_alg = Random_alg(params)
         
         # Pause worker and re-start
-        
         self.init_population()
             
         print("The choice is : {0}".format(glb_alg_choice))
@@ -324,6 +328,7 @@ class MainFrame(wx.Frame):
 
         # List of algorithms
         list_algorithms = glb_algorithms.values()
+        list_algorithms.sort()
         self.comboAlg = wx.ComboBox(self.p1, -1, value=(list_algorithms[0]), size=(120,30), pos=(10,130), choices=list_algorithms, style=wx.TE_PROCESS_ENTER)
         self.comboAlg.SetToolTip(wx.ToolTip("select algorithm to test"))
         self.comboAlg.Bind(wx.EVT_COMBOBOX, self.update_choice_alg)
@@ -375,13 +380,17 @@ class MainFrame(wx.Frame):
 
     def update_choice_alg(self, event):
         # By now global variable, fix this
+        global glb_alg_choice
+        global glb_num_population 
         
         # First of all ...  
         self.stop_chrono_worker()
         
         # Choice population
-        if (self.comboAlg.GetSelection() >= 0):
-            glb_alg_choice = self.comboAlg.GetSelection()
+        
+        #if (self.comboAlg.GetSelection() >= 0):
+        #    glb_alg_choice = self.comboAlg.GetSelection()
+        glb_alg_choice = self.comboAlg.GetValue()
         
         # Choice size
         strNum = self.wdg_size_pop.GetValue()
