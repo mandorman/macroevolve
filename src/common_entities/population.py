@@ -127,6 +127,14 @@ class Population(object):
         '''    
         return self.__people
 
+    def set_individuals(self, new_list):
+        '''
+        Returns the individuals of the class
+        '''
+        del self.__people
+        self.__people = new_list
+
+
     def get_individual_class(self):
         return self.__individualClass
 

@@ -9,12 +9,12 @@ import math as m
 import random
 from algorithms.random_alg import Population_random
 
-class Population_pseMA(Population):
+class Population_mixed(Population):
     def __init__(self, param):
-        super(Population_pseMA, self).__init__(size=param.get_size_population())
+        super(Population_mixed, self).__init__(size=param.get_size_population())
 
         
-class MA_alg(Fitness_algorithm):
+class Mixed_alg(Fitness_algorithm):
     '''
     Implementation of pseudoMacroevolutionary Algorithm
     (not, the concept is the same but without the distance matrix ... )
@@ -23,13 +23,13 @@ class MA_alg(Fitness_algorithm):
         '''
         The parameters that the algorithm takes ... (whatever..)
         '''
-        super(MA_alg, self).__init__()   
+        super(Mixed_alg, self).__init__()   
         
         # Specific params for this algorithm
         self.__params = params
         
         # Specific params
-        self.__population = Population_pseMA(self.__params)
+        self.__population = Population_mixed(self.__params)
         
         # Hard coded params (then put in GUI and play!)
         self.__radius_param = 4 # -10 a 10
@@ -80,6 +80,7 @@ class MA_alg(Fitness_algorithm):
                 ind.set_y(y)
                 ind.set_fitness(self.get_population().calculate_fitness(x, y))
             # Improve a little (?) 
+            # put here mutation!
 
     def is_population_enough_good(self):
         '''

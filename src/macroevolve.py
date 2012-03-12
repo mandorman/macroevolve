@@ -28,11 +28,12 @@ import thread
 
 import wx
 from wxPython.wx import *
-from algorithms.genetic_alg import GA_alg
+from algorithms.genetic_alg import GA_alg, Params_GA
 from algorithms.macro_evolve_alg import MA_alg
 from common_entities.fitness_algorithm import Common_alg_params
 from algorithms.random_alg import Random_alg
 import exceptions
+from algorithms.mixed_alg import Mixed_alg
 
 
 def functionXY(x,y):
@@ -64,7 +65,8 @@ class Point(object):
 ######### Select algorithm (better toy model)
 
 glb_key_pseudoME = "Pseudo ME"
-glb_key_ga = "Genetic Algorithm"
+glb_key_ga = "Genetic"
+glb_key_mixed = "Mixed"
 glb_key_random = "Random"
 
 glb_alg_choice = glb_key_random
@@ -73,11 +75,13 @@ glb_algorithms = {}
 glb_algorithms[glb_key_random] = glb_key_random 
 glb_algorithms[glb_key_pseudoME] = glb_key_pseudoME
 glb_algorithms[glb_key_ga] = glb_key_ga
+glb_algorithms[glb_key_mixed] = glb_key_mixed
 
 glb_alg_class = {}
 glb_alg_class[glb_key_random] = Random_alg
 glb_alg_class[glb_key_pseudoME] =  MA_alg
 glb_alg_class[glb_key_ga] = GA_alg
+glb_algorithms[glb_key_mixed] = glb_key_mixed
 
 ######### Just some size population (better toy model)
 glb_num_population = 10
@@ -124,7 +128,7 @@ class GraphicPlot(wx.Panel):
         self.__number_population = glb_num_population 
         
         # glb_alg_choice = 1 # ??
-        print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
+        #print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
         # The algorithm is the kind of population
         
         if (glb_alg_choice == glb_key_random ): 
@@ -139,13 +143,19 @@ class GraphicPlot(wx.Panel):
             params = Common_alg_params(self.__number_population)
             self.__fitness_alg = MA_alg(params)
             
-            
         elif (glb_alg_choice == glb_key_ga):
             # Genetic Algorithm
             print("Chosed Genetic algorithm")
+            params = Params_GA()
+            params.set_size_population(self.__number_population)
+            self.__fitness_alg = GA_alg(params)
+            
+        elif (glb_alg_choice == glb_key_mixed):
+            # Own algorithm
+            print("Chosed own (mixed) algorithm")
             params = Common_alg_params(self.__number_population)
-            self.__fitness_alg = Random_alg(params)
-        
+            self.__fitness_alg = Mixed_alg(params)
+            
         # Pause worker and re-start
         self.init_population()
             
@@ -329,7 +339,9 @@ class MainFrame(wx.Frame):
         # List of algorithms
         list_algorithms = glb_algorithms.values()
         list_algorithms.sort()
-        self.comboAlg = wx.ComboBox(self.p1, -1, value=(list_algorithms[0]), size=(120,30), pos=(10,130), choices=list_algorithms, style=wx.TE_PROCESS_ENTER)
+        global glb_alg_choice
+        glb_alg_choice = list_algorithms[0]
+        self.comboAlg = wx.ComboBox(self.p1, -1, value=(glb_alg_choice), size=(120,30), pos=(10,130), choices=list_algorithms, style=wx.TE_PROCESS_ENTER)
         self.comboAlg.SetToolTip(wx.ToolTip("select algorithm to test"))
         self.comboAlg.Bind(wx.EVT_COMBOBOX, self.update_choice_alg)
 
