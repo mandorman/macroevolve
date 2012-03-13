@@ -34,34 +34,17 @@ from common_entities.fitness_algorithm import Common_alg_params
 from algorithms.random_alg import Random_alg
 import exceptions
 from algorithms.mixed_alg import Mixed_alg
+from functions.FunctionsXY import FunctionsXY
 
+'''
 
-def functionXY(x,y):
-    '''
-    Some nice base function.
-    '''
-    #return x**2+y**2
-    dist = math.sqrt((x*x)+(y*y))
-    return ( dist+math.sin(2*dist)  )/( 100+dist)
-
-class Point(object):
-    '''
-    Base point
-    '''
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+    Entry point to macroevolve platform.
     
-    def get_x(self):
-        return self.x
-    
-    def get_y(self):
-        return self.y
-    
-    def __repr__(self):
-        return("({0},{1})".format(self.x,self.y))
+    The core parts were in /common_entities (you can extend terrain, population and 
+    fitness_algorithm to implement new algorithms)
 
-# Quit this !!
+'''
+
 ######### Select algorithm (better toy model)
 
 glb_key_pseudoME = "Pseudo ME"
@@ -94,43 +77,58 @@ glb_size_array.append(500)
 tmp = [str(i) for i in glb_size_array ]
 glb_size_array = tmp
 
+######### Set of functions to be minimized -just as demo- (that will modelate the terrain)
+glb_landscape_functions = FunctionsXY()
+
+
 import wx
 class GraphicPlot(wx.Panel):
     def __init__(self,parent):
+        '''
+        Graphic plot conforms the zone to view and control the main flow of the  simulation.
+        '''
         wx.Panel.__init__(self, parent,-1)
         
-        '''
-        Base map contains the region to plot.
-        By default an XY plane between (-10,-10) and (10,10)
-        '''
-        self.upper_limit=10
-        self.lower_limit=-10
-        self.npts = 500
-        self.function = functionXY
-        self.points = []
-        # Add Countor graph
-        self.new_countour()
+        # Draws the map
+        self.draw_map()
         
-        '''
-        Base parameters (from GUI).
-        '''  
+        #Base parameters (from GUI).  
         self.update_choice()
         
         # Distributes the population among the map 
         self.init_population()
+    
+    def draw_map(self):
+        '''
+        It draws the landscape according to some function (to try to minimize)
+        '''
+        global glb_landscape_functions
+        
+        '''
+        Base map contains the region to plot.
+        By default an XY plane between (-10,-10) and (10,10)
+        '''        
+        self.upper_limit=10
+        self.lower_limit=-10
+        self.npts = 500
+        self.function = glb_landscape_functions.get_function()
+        self.points = []
+        
+        # Add Countor graph
+        self.new_countour()
+        
         
     def update_choice(self):
-        # Yep, quit this ones! :P
+        '''
+        Updates every choice performed.
+        '''
         global glb_num_population
         global glb_alg_choice
         
         # N of people      
         self.__number_population = glb_num_population 
         
-        # glb_alg_choice = 1 # ??
-        #print("update_choice {0} tipus {1} ".format(glb_alg_choice, type(glb_alg_choice)))
-        # The algorithm is the kind of population
-        
+        # Chosed algorithm
         if (glb_alg_choice == glb_key_random ): 
             # Random
             print("Chosed Random algorithm")
@@ -182,6 +180,8 @@ class GraphicPlot(wx.Panel):
         self.z = []
         
         #seed(0)
+        global glb_landscape_functions
+        functionXY = glb_landscape_functions.get_function()
         self.x = uniform(self.lower_limit, self.upper_limit, self.npts)
         self.y = uniform(self.lower_limit, self.upper_limit, self.npts)
         for index in range(0,len(self.x)):
@@ -391,6 +391,9 @@ class MainFrame(wx.Frame):
         """
 
     def update_choice_alg(self, event):
+        '''
+        Updates the choice performed by the controls
+        '''
         # By now global variable, fix this
         global glb_alg_choice
         global glb_num_population 
@@ -398,23 +401,16 @@ class MainFrame(wx.Frame):
         # First of all ...  
         self.stop_chrono_worker()
         
-        # Choice population
-        
-        #if (self.comboAlg.GetSelection() >= 0):
-        #    glb_alg_choice = self.comboAlg.GetSelection()
+        # Choice population  (GetSelections >= 0 the index of the position)
         glb_alg_choice = self.comboAlg.GetValue()
         
         # Choice size
         strNum = self.wdg_size_pop.GetValue()
         glb_num_population = int(strNum)
-        #glb_num_population = parse_2_int_range(strNum)
-        #self.wdg_size_pop.SetValue(str(glb_num_population))
         
-        # Then ... Update the choice (restart!?)
+        # Update the choice (restart!?)
         self.gp.update_choice() 
         
-        print "update_choice_alg {0} and selection {1}".format(glb_alg_choice, event.GetSelection())
-     
 
     def add_widgetMenu(self):
         # Creating the menubar.
@@ -519,11 +515,24 @@ Some of implemented algorithms:\n    macroevolutionary algorithm."
         else:
             self.stop_chrono_worker()
  
-    def new_map_event(self):
+    def new_map_event(self, event):
         '''
-        Creates a new map
+        Creates a new map from the functions library (as demo)
         '''
-        pass
+        # Chrono must be stopped
+        self.stop_chrono_worker()
+        
+        # Invoques a new function
+        glb_landscape_functions.get_random_function()
+        
+        # Updates the map
+        self.gp.draw_map()
+        
+        # update choice
+        self.update_choice_alg(None)
+        
+        # Inits the population
+        self.gp.init_population()
 
     def ticks(self):
         '''

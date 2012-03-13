@@ -3,6 +3,8 @@ Created on Mar 9, 2012
 
 @author: armand
 '''
+import random
+import math
 
 '''
 //////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +14,6 @@ Created on Mar 9, 2012
     The idea should be serialize it to JSON, and let import functions as objects.
 //////////////////////////////////////////////////////////////////////////////////
 '''
-import math
 
 def functionXY(x,y):
     '''
@@ -40,11 +41,25 @@ class FunctionsXY(object):
         '''
         Constructor
         '''
-        #self.functions = []
-        self.functions = []
-        self.functions.append(functionXY)
         
+        # Core function
+        self.__function = functionXY
+        
+        # Set of functions
+        self.__functions = []
+        self.__functions.append(functionXY)
+    
+    def get_function(self):
+        '''
+        Get the core function
+        '''
+        return self.__function
+     
     def get_random_function(self):
-        r = 0
-        return self.functions[r]
+        '''
+        Get some random function
+        '''
+        r = random.randint(0,len(self.__functions)-1)
+        self.__function = self.__functions[r]
+        return self.__function
         

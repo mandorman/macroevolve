@@ -80,8 +80,7 @@ class Population(object):
         self.__size = size
         self.__map = terrain
         self.__people = []
-        
-        print(">>>>>>>>>> New population created .. size of populus : {0}".format(size))
+    
 
     def calculate_fitness(self,x,y):
         '''
@@ -98,7 +97,7 @@ class Population(object):
         
         # Init
         self.__people = []
-        print "population - new population"
+        
         f_fitness = self.__map.get_function()
         # Sparse individuals randomly for the terrain
         for i in range(self.__size):
