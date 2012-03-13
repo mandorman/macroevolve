@@ -1,15 +1,25 @@
 Project to simulate genetic and macroevolutionary algorithms
 ============================================================
 
-(Beta release.)
-
 Platform to simulate algorithms to maximize/minimize functions using AI techniques.
+(Beta release)
 
-
-Requirements  :
+To execute this application be sure that you have installed  :
 	python+2.7
 	python-scitools
 	python-matplotlib
 	wxPython
 
 
+Just a tool to see how different algorithms evolves during the time (now is more close to demo version).
+
+The idea is that is easy to implement new algorithms and see visually how they work.
+
+Future work
+===========
+There are several core ideas to implement :
+	- Add a config panel to parametrize the diferent methods.
+	- Add a "rec" button to record some kind of simulation.
+	- Add a export operation (to export the simulation to html, for example, using google chart)
+	
+.. and of course, improve the existing ones and implement new algorithms as well! :)
