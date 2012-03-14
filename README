@@ -19,6 +19,43 @@ Just a tool to see how different algorithms evolves during the time (now is more
 
 The idea is that is easy to implement new algorithms and see visually how they work.
 
+
+Basic Entities
+==============
+
+Is already more easy to extend to new algorithms.
+
+The basic packages are :
+
++ algorithms
+
+	- Implementation of core algorithms. It uses objects in the 'common_entities' package.
+	
+
++ common_entities
+
+	- fitness_algorithm : Is the nexus between the GUI and algorithm simulator. Also it manages the 
+						parameters that must be passed to the algorithms (and decouble among the view part).
+						Know how manage the population and when a algorithm converges.
+						Its objects are responsible of manage the parameters of algorithms.
+	
+	- population :  Contain the basic object of the dynamic entities such as individuals, and
+					some control about them (they could generate new individuals, update population, etc.)
+	
+	- terrain : Is the proper landscape. It contains also the function to maximize(minimize).
+				
+
++ functions 
+	- Class FunctionsXY (package that contains all functions -and also produces random ones
+	                     also contains core facilities to try and add new ones.)-
+	                    
+
+Note that the unique algorithm that is mandatory if we have to heritance is the object Fitness_algorithm
+of the package 'common_entities'.
+The other objects could vary.
+
+
+
 Future work
 ===========
 There are several core ideas to implement :
