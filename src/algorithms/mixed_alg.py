@@ -69,6 +69,8 @@ class Mixed_alg(Fitness_algorithm):
         y_best = best_ind.get_y()
         avg_fitness = avg_fitness/self.get_size_population()
         
+        new_individuals = []
+        
         # For all individuals that are less than the average
         for ind in self.get_individuals():
             # Minimize the fitness ...  encapsulate this!
@@ -79,8 +81,44 @@ class Mixed_alg(Fitness_algorithm):
                 ind.set_x(x)
                 ind.set_y(y)
                 ind.set_fitness(self.get_population().calculate_fitness(x, y))
-            # Improve a little (?) 
-            # put here mutation!
+   
+            else:
+                '''
+                We could try to improve a little for the rest of individuals (chance to improve..)
+                ''' 
+                # Also we could try to mutate more than one..
+                indyTmp = ind
+                indyTmp = (self.mutate_individual(indyTmp))
+                if (  self.__is_better_fitness(indyTmp, ind) ):
+                    ind.set_x(indyTmp.get_x())
+                    ind.set_y(indyTmp.get_y())
+            
+            # New individuals (try to improve)         
+            new_individuals.append(ind)
+            self.get_population().set_individuals(new_individuals)
+            
+    def mutate_individual(self, indy):
+        '''
+        Mutates the individual object and returns it.
+        It must calculate the fitness for the new mutated individual.
+        '''
+        variation=random.uniform(0,0.05)
+         
+        indy.x+=variation
+        
+        lower_lim = self.get_population().get_terrain().get_lower_limit()
+        upper_lim = self.get_population().get_terrain().get_upper_limit()
+        
+        if indy.x > lower_lim: indy.x = lower_lim + (indy.x - upper_lim)
+        if indy.x < lower_lim: indy.x = upper_lim + (indy.x - lower_lim)
+        indy.y += variation
+        if indy.y > upper_lim : indy.y = lower_lim + indy.y-indy.upper_limit
+        if indy.y < lower_lim: indy.y = indy.upper_limit + (indy.y - lower_lim)
+        
+        indy.set_fitness(self.get_population().calculate_fitness(indy.x, indy.y)) 
+        return(indy)
+
+
 
     def is_population_enough_good(self):
         '''

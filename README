@@ -2,14 +2,18 @@ Project to simulate genetic and macroevolutionary algorithms
 ============================================================
 
 Platform to simulate algorithms to maximize/minimize functions using AI techniques.
-(Beta release)
+(Beta release, just educative package)
 
 To execute this application be sure that you have installed  :
 	python+2.7
 	python-scitools
 	python-matplotlib
 	wxPython
-
+	wxGTK2.8
+	
+In Ubuntu (Linux), wxPython also could be installed if you download wxGlade (alhough you must install).  :
+	sudo apt-get install wxglade 
+	sudo apt-get install gtk2-engines-pixbuf
 
 Just a tool to see how different algorithms evolves during the time (now is more close to demo version).
 

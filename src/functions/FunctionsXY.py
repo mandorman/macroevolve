@@ -60,6 +60,42 @@ def function_G2_XY(x,y):
     
     return res
 
+def function_MAP_XY(x,y):
+    '''
+    Other combination (sum of gaussians)
+    '''
+    x = sin(x/5)
+    y = sin(y/5)
+    res = calculate_gaussian(3, -2, -7,x,y)
+
+    return res
+
+
+def function_MAP_XY(x,y):
+    '''
+    Other combination (sum of gaussians)
+    '''
+    x = sin(x*5)
+    y = cos(y*5)
+    res = calculate_gaussian(3, -2, -7,x,y)
+
+    return res
+
+
+def function_SIN_XY(x,y):
+    '''
+    Other combination (sum of gaussians)
+    '''
+    x = sin(x*5)
+    y = cos(y*5)
+    res = calculate_gaussian(3, -2, -7,x,y)
+    #res = res + calculate_gaussian(2, -5, -3,x,y)
+    #res = res + function_G1_difficult_XY(x,y)
+    #res = res + calculate_gaussian(3, 9, 4,x,y)
+    
+    return res
+
+
 def function_G3_XY(x,y):
     '''
     Other combination (sum of gaussians)
@@ -115,6 +151,7 @@ class FunctionsXY(object):
         self.__functions.append(function_G1_XY)
         self.__functions.append(function_G2_XY)
         self.__functions.append(function_G3_XY)
+        self.__functions.append(function_MAP_XY)
         self.__functions.append(function_G1_difficult_XY)
     
     def get_function(self):
@@ -150,7 +187,7 @@ if __name__ == "__main__":
     z = []
     
     # Fun to test
-    functionXY = function_G1_difficult_XY
+    functionXY = function_SIN_XY
     
     x = uniform(lower_limit, upper_limit, npts)
     y = uniform(lower_limit, upper_limit, npts)

@@ -29,7 +29,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li id="searchli">
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -53,46 +52,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
-      <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
   <div id="nav-path" class="navpath">
     <ul>
       <li class="navelem"><b>src</b>      </li>
       <li class="navelem"><b>common_entities</b>      </li>
-      <li class="navelem"><a class="el" href="namespacesrc_1_1common__entities_1_1fitness__algorithm.html">fitness_algorithm</a>      </li>
+      <li class="navelem"><b>fitness_algorithm</b>      </li>
       <li class="navelem"><a class="el" href="classsrc_1_1common__entities_1_1fitness__algorithm_1_1Common__alg__params.html">Common_alg_params</a>      </li>
     </ul>
   </div>
 </div>
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#properties">Properties</a>  </div>
   <div class="headertitle">
 <div class="title">src::common_entities::fitness_algorithm::Common_alg_params Class Reference</div>  </div>
 </div>
 <div class="contents">
-<!-- doxytag: class="src::common_entities::fitness_algorithm::Common_alg_params" -->
-<p><a href="classsrc_1_1common__entities_1_1fitness__algorithm_1_1Common__alg__params-members.html">List of all members.</a></p>
-<table class="memberdecls">
-<tr><td colspan="2"><h2><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8ba4bff8aee0836cd6440f04e5b0d45a"></a><!-- doxytag: member="src::common_entities::fitness_algorithm::Common_alg_params::__init__" ref="a8ba4bff8aee0836cd6440f04e5b0d45a" args="" -->
-def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9889b3c186d2f141688b854cf61354a7"></a><!-- doxytag: member="src::common_entities::fitness_algorithm::Common_alg_params::get_size_population" ref="a9889b3c186d2f141688b854cf61354a7" args="" -->
-def&#160;</td><td class="memItemRight" valign="bottom"><b>get_size_population</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2a6d2944a7f7927d57eb983f3f9e688"></a><!-- doxytag: member="src::common_entities::fitness_algorithm::Common_alg_params::set_size_population" ref="ae2a6d2944a7f7927d57eb983f3f9e688" args="" -->
-def&#160;</td><td class="memItemRight" valign="bottom"><b>set_size_population</b></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0dcc77b15189e10e1cf8c92895237482"></a><!-- doxytag: member="src::common_entities::fitness_algorithm::Common_alg_params::get_terrain" ref="a0dcc77b15189e10e1cf8c92895237482" args="" -->
-def&#160;</td><td class="memItemRight" valign="bottom"><b>get_terrain</b></td></tr>
-<tr><td colspan="2"><h2><a name="properties"></a>
-Properties</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9bbac5eca6323f5ac25a1252c17ef15"></a><!-- doxytag: member="src::common_entities::fitness_algorithm::Common_alg_params::population" ref="ad9bbac5eca6323f5ac25a1252c17ef15" args="" -->
-&#160;</td><td class="memItemRight" valign="bottom"><b>population</b> = property(get_size_population, set_size_population, None, &quot;population's size&quot;)</td></tr>
+<!-- doxytag: class="src::common_entities::fitness_algorithm::Common_alg_params" --><table class="memberdecls">
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><div class="fragment"><pre class="fragment">
+    It creates a new population
+    </pre></div> <div class="fragment"><pre class="fragment">
+    Updates the population (next generation of events)
+    </pre></div> <div class="fragment"><pre class="fragment">
+    Return the individuals
+    </pre></div> <div class="fragment"><pre class="fragment">
+    Returns the size of population
+    </pre></div> <div class="fragment"><pre class="fragment">
+    Condition to stop the algorithm
+    </pre></div> <div class="fragment"><pre class="fragment">
 Class to encapsulate all the params
 </pre></div> </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/common_entities/fitness_algorithm.py</li>
@@ -103,7 +92,7 @@ Class to encapsulate all the params
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -112,7 +101,7 @@ Class to encapsulate all the params
 </iframe>
 </div>
 
-<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 13 2012 00:13:23 for macroevolve by&#160;
+<hr class="footer"/><address class="footer"><small>Generated on Tue Mar 13 2012 13:11:25 for macroevolve by&#160;
 <a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.4 </small></address>
 </body>

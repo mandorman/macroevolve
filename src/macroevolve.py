@@ -9,6 +9,7 @@ Created on Mar 7, 2012
         
         Maximize(Minimize) a given function using genetic o macroevolutionary algorithms.
 
+
 '''
 from numpy import *
 from numpy.random import uniform, seed
