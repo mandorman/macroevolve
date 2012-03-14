@@ -67,15 +67,18 @@ class Mixed_alg(Fitness_algorithm):
         
         x_best = best_ind.get_x()
         y_best = best_ind.get_y()
+        
         avg_fitness = avg_fitness/self.get_size_population()
         
         new_individuals = []
         
+        # And what if we pivote among the best? (instead average?)
+        avg_fitness = (best_ind.get_fitness() + avg_fitness)/2
         # For all individuals that are less than the average
         for ind in self.get_individuals():
             # Minimize the fitness ...  encapsulate this!
             #if (ind.get_fitness() > avg_fitness):
-            if not self.__is_better_fitness(avg_fitness, ind.get_fitness()):
+            if (not self.__is_better_fitness(avg_fitness, ind.get_fitness() ) ) :
                 # Calculates new position near best 
                 x,y = self.__calculate_pos_in_radius(self.__radius_param, x_best, y_best)
                 ind.set_x(x)
@@ -89,7 +92,7 @@ class Mixed_alg(Fitness_algorithm):
                 # Also we could try to mutate more than one..
                 indyTmp = ind
                 indyTmp = (self.mutate_individual(indyTmp))
-                if (  self.__is_better_fitness(indyTmp, ind) ):
+                if (  self.__is_better_fitness(indyTmp.get_fitness(), ind.get_fitness()) ):
                     ind.set_x(indyTmp.get_x())
                     ind.set_y(indyTmp.get_y())
             
@@ -112,8 +115,8 @@ class Mixed_alg(Fitness_algorithm):
         if indy.x > lower_lim: indy.x = lower_lim + (indy.x - upper_lim)
         if indy.x < lower_lim: indy.x = upper_lim + (indy.x - lower_lim)
         indy.y += variation
-        if indy.y > upper_lim : indy.y = lower_lim + indy.y-indy.upper_limit
-        if indy.y < lower_lim: indy.y = indy.upper_limit + (indy.y - lower_lim)
+        if indy.y > upper_lim : indy.y = lower_lim + indy.y- upper_lim
+        if indy.y < lower_lim: indy.y = upper_lim + (indy.y - lower_lim)
         
         indy.set_fitness(self.get_population().calculate_fitness(indy.x, indy.y)) 
         return(indy)

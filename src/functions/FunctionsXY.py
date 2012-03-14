@@ -64,30 +64,20 @@ def function_MAP_XY(x,y):
     '''
     Other combination (sum of gaussians)
     '''
-    x = sin(x/5)
-    y = sin(y/5)
+    x = math.sin(x/5)
+    y = math.sin(y/5)
     res = calculate_gaussian(3, -2, -7,x,y)
 
     return res
 
-
-def function_MAP_XY(x,y):
-    '''
-    Other combination (sum of gaussians)
-    '''
-    x = sin(x*5)
-    y = cos(y*5)
-    res = calculate_gaussian(3, -2, -7,x,y)
-
-    return res
 
 
 def function_SIN_XY(x,y):
     '''
     Other combination (sum of gaussians)
     '''
-    x = sin(x*5)
-    y = cos(y*5)
+    x = math.sin(x*5)
+    y = math.cos(y*5)
     res = calculate_gaussian(3, -2, -7,x,y)
     #res = res + calculate_gaussian(2, -5, -3,x,y)
     #res = res + function_G1_difficult_XY(x,y)
